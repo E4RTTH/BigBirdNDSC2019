@@ -17,7 +17,7 @@ def preprocess_data(titles):
     ps = PorterStemmer()
     data = []
     for i in range(0, len(titles)):
-        title = re.sub('[^a-zA-Z]', ' ', titles[i])
+        title = re.sub('[^a-zA-Z0-9]', ' ', titles[i])
         title = title.lower()
         title = title.split()
         title = [ps.stem(word) for word in title if not word in set(stopwords.words('english'))]
@@ -82,23 +82,36 @@ def train_predict_data(dataset, attr_name, classifier):
 
 
 # Importing the dataset
-dataset = pd.read_csv('beauty_data_info_train_competition.csv', quoting = 3)
+dataset = pd.read_csv('mobile_data_info_train_competition.csv', quoting = 3)
 
 # Update stopwords database
 nltk.download('stopwords')
 
 
 
-cm_Benefits, acc_Benefits, f1_Benefits = train_predict_data(dataset, 'Benefits', LogisticRegression(random_state = 0, multi_class = 'ovr'))
-print("Benefits: acc=", acc_Benefits, ", f1=", f1_Benefits)
-cm_Colour, acc_Colour, f1_Colour = train_predict_data(dataset, 'Colour_group', LogisticRegression(random_state = 0, multi_class = 'ovr'))
-print("Colour_group: acc=", acc_Colour, ", f1=", f1_Colour)
+cm_OS, acc_OS, f1_OS = train_predict_data(dataset, 'Operating System', LogisticRegression(random_state = 0, multi_class = 'ovr'))
+print("OS: acc=", acc_OS, ", f1=", f1_OS)
+cm_Features, acc_Features, f1_Features = train_predict_data(dataset, 'Features', LogisticRegression(random_state = 0, multi_class = 'ovr'))
+print("Features: acc=", acc_Features, ", f1=", f1_Features)
+cm_Network, acc_Network, f1_Network = train_predict_data(dataset, 'Network Connections', LogisticRegression(random_state = 0, multi_class = 'ovr'))
+print("Network Connections: acc=", acc_Network, ", f1=", f1_Network)
+cm_RAM, acc_RAM, f1_RAM = train_predict_data(dataset, 'Memory RAM', LogisticRegression(random_state = 0, multi_class = 'ovr'))
+print("Memory RAM: acc=", acc_RAM, ", f1=", f1_RAM)
 cm_Brand, acc_Brand, f1_Brand = train_predict_data(dataset, 'Brand', LogisticRegression(random_state = 0, multi_class = 'ovr'))
 print("Brand: acc=", acc_Brand, ", f1=", f1_Brand)
-cm_Texture, acc_Texture, f1_Texture = train_predict_data(dataset, 'Product_texture', LogisticRegression(random_state = 0, multi_class = 'ovr'))
-print("Product_texture: acc=", acc_Texture, ", f1=", f1_Texture)
-cm_Skin, acc_Skin, f1_Skin = train_predict_data(dataset, 'Skin_type', LogisticRegression(random_state = 0, multi_class = 'ovr'))
-print("Skin_type: acc=", acc_Skin, ", f1=", f1_Skin)
+cm_Warranty, acc_Warranty, f1_Warranty = train_predict_data(dataset, 'Warranty Period', LogisticRegression(random_state = 0, multi_class = 'ovr'))
+print("Warranty Period: acc=", acc_Warranty, ", f1=", f1_Warranty)
+cm_Storage, acc_Storage, f1_Storage = train_predict_data(dataset, 'Storage Capacity', LogisticRegression(random_state = 0, multi_class = 'ovr'))
+print("Storage Capacity: acc=", acc_Storage, ", f1=", f1_Storage)
+cm_Color, acc_Color, f1_Color = train_predict_data(dataset, 'Color Family', LogisticRegression(random_state = 0, multi_class = 'ovr'))
+print("Color Family: acc=", acc_Color, ", f1=", f1_Color)
+cm_Model, acc_Model, f1_Model = train_predict_data(dataset, 'Phone Model', LogisticRegression(random_state = 0, multi_class = 'ovr'))
+print("Phone Model: acc=", acc_Model, ", f1=", f1_Model)
+cm_Camera, acc_Camera, f1_Camera = train_predict_data(dataset, 'Camera', LogisticRegression(random_state = 0, multi_class = 'ovr'))
+print("Camera: acc=", acc_Camera, ", f1=", f1_Camera)
+cm_Size, acc_Size, f1_Size = train_predict_data(dataset, 'Phone Screen Size', LogisticRegression(random_state = 0, multi_class = 'ovr'))
+print("Phone Screen Size: acc=", acc_Size, ", f1=", f1_Size)
+
 
 
 
