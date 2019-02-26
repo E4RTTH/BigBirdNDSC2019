@@ -1,4 +1,4 @@
-# Natural Language Processing
+# Big Bird - NDSC 2019
 
 # Importing the libraries
 import numpy as np
@@ -12,6 +12,9 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, accuracy_score, f1_score
 from sklearn.linear_model import LogisticRegression
+
+
+# Functions definition --------------------------------------------------------------------------------
 
 def preprocess_data(titles):
     ps = PorterStemmer()
@@ -28,9 +31,13 @@ def preprocess_data(titles):
         
     return data
 
+
+
 def vectorize_data(vectorizer, data):
     vectors = vectorizer.fit_transform(data).toarray()
     return vectors
+
+
 
 def train_predict_data(dataset, attr_name, classifier):
     
@@ -79,6 +86,8 @@ def train_predict_data(dataset, attr_name, classifier):
         
     return cm, accuracy, f1
 
+#-------------------------------------------------------------------------------------------------------
+
 
 
 # Importing the dataset
@@ -86,8 +95,6 @@ dataset = pd.read_csv('beauty_data_info_train_competition.csv', quoting = 3)
 
 # Update stopwords database
 nltk.download('stopwords')
-
-
 
 cm_Benefits, acc_Benefits, f1_Benefits = train_predict_data(dataset, 'Benefits', LogisticRegression(random_state = 0, multi_class = 'ovr'))
 cm_Colour, acc_Colour, f1_Colour = train_predict_data(dataset, 'Colour_group', LogisticRegression(random_state = 0, multi_class = 'ovr'))
