@@ -131,27 +131,27 @@ y_pred_Beauty_Skin = train_predict_data(dataset_train,  \
 
 for i in range(0, len(dataset_val)):
     itemid = "%d_Benefits" % dataset_val['itemid'].values[i]
-    tag = y_pred_Beauty_Benefits[i]
+    tag = int(y_pred_Beauty_Benefits[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
     itemid = "%d_Brand" % dataset_val['itemid'].values[i]
-    tag = y_pred_Beauty_Brand[i]
+    tag = int(y_pred_Beauty_Brand[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
     itemid = "%d_Colour_group" % dataset_val['itemid'].values[i]
-    tag = y_pred_Beauty_Colour[i]
+    tag = int(y_pred_Beauty_Colour[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
     itemid = "%d_Product_texture" % dataset_val['itemid'].values[i]
-    tag = y_pred_Beauty_Texture[i]
+    tag = int(y_pred_Beauty_Texture[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
     itemid = "%d_Skin_type" % dataset_val['itemid'].values[i]
-    tag = y_pred_Beauty_Skin[i]
+    tag = int(y_pred_Beauty_Skin[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
@@ -200,27 +200,27 @@ y_pred_Fashion_Sleeves = train_predict_data(dataset_train,  \
 
 for i in range(0, len(dataset_val)):
     itemid = "%d_Pattern" % dataset_val['itemid'].values[i]
-    tag = y_pred_Fashion_Pattern[i]
+    tag = int(y_pred_Fashion_Pattern[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
     itemid = "%d_Collar" % dataset_val['itemid'].values[i]
-    tag = y_pred_Fashion_Collar[i]
+    tag = int(y_pred_Fashion_Collar[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
     itemid = "%d_Fashion" % dataset_val['itemid'].values[i]
-    tag = y_pred_Fashion_Fashion[i]
+    tag = int(y_pred_Fashion_Fashion[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
     itemid = "%d_Clothing Material" % dataset_val['itemid'].values[i]
-    tag = y_pred_Fashion_Material[i]
+    tag = int(y_pred_Fashion_Material[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
     itemid = "%d_Sleeves" % dataset_val['itemid'].values[i]
-    tag = y_pred_Fashion_Sleeves[i]
+    tag = int(y_pred_Fashion_Sleeves[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
@@ -307,57 +307,57 @@ y_pred_Mobile_Size = train_predict_data(dataset_train,  \
 
 for i in range(0, len(dataset_val)):
     itemid = "%d_Operating System" % dataset_val['itemid'].values[i]
-    tag = y_pred_Mobile_OS[i]
+    tag = int(y_pred_Mobile_OS[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
     itemid = "%d_Features" % dataset_val['itemid'].values[i]
-    tag = y_pred_Mobile_Features[i]
+    tag = int(y_pred_Mobile_Features[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
     itemid = "%d_Network Connections" % dataset_val['itemid'].values[i]
-    tag = y_pred_Mobile_Network[i]
+    tag = int(y_pred_Mobile_Network[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
     itemid = "%d_Memory RAM" % dataset_val['itemid'].values[i]
-    tag = y_pred_Mobile_RAM[i]
+    tag = int(y_pred_Mobile_RAM[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
     itemid = "%d_Brand" % dataset_val['itemid'].values[i]
-    tag = y_pred_Mobile_Brand[i]
+    tag = int(y_pred_Mobile_Brand[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
     itemid = "%d_Warranty Period" % dataset_val['itemid'].values[i]
-    tag = y_pred_Mobile_Warranty[i]
+    tag = int(y_pred_Mobile_Warranty[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
     itemid = "%d_Storage Capacity" % dataset_val['itemid'].values[i]
-    tag = y_pred_Mobile_Storage[i]
+    tag = int(y_pred_Mobile_Storage[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
     itemid = "%d_Color Family" % dataset_val['itemid'].values[i]
-    tag = y_pred_Mobile_Color[i]
+    tag = int(y_pred_Mobile_Color[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
     itemid = "%d_Phone Model" % dataset_val['itemid'].values[i]
-    tag = y_pred_Mobile_Model[i]
+    tag = int(y_pred_Mobile_Model[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
     itemid = "%d_Camera" % dataset_val['itemid'].values[i]
-    tag = y_pred_Mobile_Camera[i]
+    tag = int(y_pred_Mobile_Camera[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
     itemid = "%d_Phone Screen Size" % dataset_val['itemid'].values[i]
-    tag = y_pred_Mobile_Size[i]
+    tag = int(y_pred_Mobile_Size[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
@@ -367,3 +367,5 @@ del y_pred_Mobile_Warranty, y_pred_Mobile_Storage, y_pred_Mobile_Color, y_pred_M
 del dataset_train, dataset_val
     
 #-------------------------------------------------------------------------------------------------------
+
+submission_df.to_csv('submission.csv', index=False)
