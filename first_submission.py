@@ -175,15 +175,15 @@ y_pred_Fashion_Pattern = train_predict_data(dataset_train,  \
 
 y_pred_Fashion_Collar = train_predict_data(dataset_train,  \
                                            dataset_val,    \
-                                           'Collar',     \
+                                           'Collar Type',     \
                                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
                                            '[^a-zA-Z]')
 
-y_pred_Fashion_Fashion = train_predict_data(dataset_train,  \
-                                            dataset_val,    \
-                                            'Fashion',     \
-                                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
-                                            '[^a-zA-Z]')
+y_pred_Fashion_Trend = train_predict_data(dataset_train,  \
+                                          dataset_val,    \
+                                          'Fashion Trend',     \
+                                          LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
+                                          '[^a-zA-Z]')
 
 y_pred_Fashion_Material = train_predict_data(dataset_train,  \
                                              dataset_val,    \
@@ -204,13 +204,13 @@ for i in range(0, len(dataset_val)):
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
-    itemid = "%d_Collar" % dataset_val['itemid'].values[i]
+    itemid = "%d_Collar Type" % dataset_val['itemid'].values[i]
     tag = int(y_pred_Fashion_Collar[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
-    itemid = "%d_Fashion" % dataset_val['itemid'].values[i]
-    tag = int(y_pred_Fashion_Fashion[i])
+    itemid = "%d_Fashion Trend" % dataset_val['itemid'].values[i]
+    tag = int(y_pred_Fashion_Trend[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
     
@@ -335,7 +335,7 @@ for i in range(0, len(dataset_val)):
     tag = int(y_pred_Mobile_Warranty[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
     submission_df = submission_df.append(df)
-    
+     
     itemid = "%d_Storage Capacity" % dataset_val['itemid'].values[i]
     tag = int(y_pred_Mobile_Storage[i])
     df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
