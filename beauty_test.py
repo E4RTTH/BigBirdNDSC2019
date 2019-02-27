@@ -98,12 +98,16 @@ nltk.download('stopwords')
 
 cm_Benefits, acc_Benefits, f1_Benefits = train_predict_data(dataset, 'Benefits', LogisticRegression(random_state = 0, multi_class = 'ovr'))
 print("Benefits: acc=", acc_Benefits, ", f1=", f1_Benefits)
+
 cm_Colour, acc_Colour, f1_Colour = train_predict_data(dataset, 'Colour_group', LogisticRegression(random_state = 0, multi_class = 'ovr'))
 print("Colour_group: acc=", acc_Colour, ", f1=", f1_Colour)
+
 cm_Brand, acc_Brand, f1_Brand = train_predict_data(dataset, 'Brand', LogisticRegression(random_state = 0, multi_class = 'ovr'))
 print("Brand: acc=", acc_Brand, ", f1=", f1_Brand)
+
 cm_Texture, acc_Texture, f1_Texture = train_predict_data(dataset, 'Product_texture', LogisticRegression(random_state = 0, multi_class = 'ovr'))
 print("Product_texture: acc=", acc_Texture, ", f1=", f1_Texture)
+
 cm_Skin, acc_Skin, f1_Skin = train_predict_data(dataset, 'Skin_type', LogisticRegression(random_state = 0, multi_class = 'ovr'))
 print("Skin_type: acc=", acc_Skin, ", f1=", f1_Skin)
 
