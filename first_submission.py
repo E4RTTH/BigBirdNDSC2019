@@ -8,9 +8,7 @@ import re
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
-from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix, accuracy_score, f1_score
+from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.linear_model import LogisticRegression
 
 # Update stopwords database
@@ -64,15 +62,6 @@ def train_predict_data(dataset_train, dataset_val, attr_name, classifier, regex)
     X_train = X[0:trainCount]
     X_test = X[trainCount:len(X)]
     
-    # Using TF-IDF Vectorizer (Word level) as features
-    #X = vectorize_data(TfidfVectorizer(analyzer='word', token_pattern=r'\w{1,}', max_features=10000), X)
-    
-    # Using TF-IDF Vectorizer (NGram level) as features
-    #X = vectorize_data(TfidfVectorizer(analyzer='word', token_pattern=r'\w{1,}', ngram_range=(2,3), max_features=10000), X)
-    
-    
-    
-    
     # Fitting Logistic Regression one vs all
     #classifier = LogisticRegression(random_state = 0, multi_class = 'ovr')
     classifier.fit(X_train, y_train)
@@ -89,8 +78,8 @@ def train_predict_data(dataset_train, dataset_val, attr_name, classifier, regex)
 
 
 
-
-submission_df = pd.DataFrame(columns=['id', 'tagging'])
+idlist = []
+taglist = []
 
 # Category: Beauty -------------------------------------------------------------------------------------
 
@@ -104,11 +93,15 @@ y_pred_Beauty_Benefits = train_predict_data(dataset_train,  \
                                             LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
                                             '[^a-zA-Z]')
 
+print ('Finish predicting Beauty Benefits')
+
 y_pred_Beauty_Brand = train_predict_data(dataset_train,  \
                                          dataset_val,    \
                                          'Brand',     \
                                          LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
                                          '[^a-zA-Z]')
+
+print ('Finish predicting Beauty Brand')
 
 y_pred_Beauty_Colour = train_predict_data(dataset_train,  \
                                           dataset_val,    \
@@ -116,11 +109,15 @@ y_pred_Beauty_Colour = train_predict_data(dataset_train,  \
                                           LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
                                           '[^a-zA-Z]')
 
+print ('Finish predicting Beauty Colour')
+
 y_pred_Beauty_Texture = train_predict_data(dataset_train,  \
                                            dataset_val,    \
                                            'Product_texture',     \
                                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
                                            '[^a-zA-Z]')
+
+print ('Finish predicting Beauty Product texture')
 
 y_pred_Beauty_Skin = train_predict_data(dataset_train,  \
                                         dataset_val,    \
@@ -128,36 +125,40 @@ y_pred_Beauty_Skin = train_predict_data(dataset_train,  \
                                         LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
                                         '[^a-zA-Z]')
 
+print ('Finish predicting Beauty skin type')
 
-for i in range(0, len(dataset_val)):
-    itemid = "%d_Benefits" % dataset_val['itemid'].values[i]
+
+for i, row in dataset_val.iterrows():
+    itemid = "%d_Benefits" % row['itemid']
     tag = int(y_pred_Beauty_Benefits[i])
-    df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
-    submission_df = submission_df.append(df)
+    idlist.append(itemid)
+    taglist.append(tag)
     
-    itemid = "%d_Brand" % dataset_val['itemid'].values[i]
+    itemid = "%d_Brand" % row['itemid']
     tag = int(y_pred_Beauty_Brand[i])
-    df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
-    submission_df = submission_df.append(df)
+    idlist.append(itemid)
+    taglist.append(tag)
     
-    itemid = "%d_Colour_group" % dataset_val['itemid'].values[i]
+    itemid = "%d_Colour_group" % row['itemid']
     tag = int(y_pred_Beauty_Colour[i])
-    df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
-    submission_df = submission_df.append(df)
+    idlist.append(itemid)
+    taglist.append(tag)
     
-    itemid = "%d_Product_texture" % dataset_val['itemid'].values[i]
+    itemid = "%d_Product_texture" % row['itemid']
     tag = int(y_pred_Beauty_Texture[i])
-    df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
-    submission_df = submission_df.append(df)
+    idlist.append(itemid)
+    taglist.append(tag)
     
-    itemid = "%d_Skin_type" % dataset_val['itemid'].values[i]
+    itemid = "%d_Skin_type" % row['itemid']
     tag = int(y_pred_Beauty_Skin[i])
-    df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
-    submission_df = submission_df.append(df)
+    idlist.append(itemid)
+    taglist.append(tag)
     
 
 del y_pred_Beauty_Benefits, y_pred_Beauty_Brand, y_pred_Beauty_Colour, y_pred_Beauty_Texture, y_pred_Beauty_Skin
 del dataset_train, dataset_val
+
+print ('Finish writing Beauty to submission df')
     
 #-------------------------------------------------------------------------------------------------------
 
@@ -173,11 +174,15 @@ y_pred_Fashion_Pattern = train_predict_data(dataset_train,  \
                                             LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
                                             '[^a-zA-Z]')
 
+print ('Finish predicting Fashion Pattern')
+
 y_pred_Fashion_Collar = train_predict_data(dataset_train,  \
                                            dataset_val,    \
                                            'Collar Type',     \
                                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
                                            '[^a-zA-Z]')
+
+print ('Finish predicting Fashion Collar')
 
 y_pred_Fashion_Trend = train_predict_data(dataset_train,  \
                                           dataset_val,    \
@@ -185,11 +190,15 @@ y_pred_Fashion_Trend = train_predict_data(dataset_train,  \
                                           LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
                                           '[^a-zA-Z]')
 
+print ('Finish predicting Fashion Trend')
+
 y_pred_Fashion_Material = train_predict_data(dataset_train,  \
                                              dataset_val,    \
                                              'Clothing Material',     \
                                              LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
                                              '[^a-zA-Z]')
+
+print ('Finish predicting Fashion Material')
 
 y_pred_Fashion_Sleeves = train_predict_data(dataset_train,  \
                                             dataset_val,    \
@@ -197,36 +206,40 @@ y_pred_Fashion_Sleeves = train_predict_data(dataset_train,  \
                                             LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
                                             '[^a-zA-Z]')
 
+print ('Finish predicting Fashion Sleeves')
 
-for i in range(0, len(dataset_val)):
-    itemid = "%d_Pattern" % dataset_val['itemid'].values[i]
+
+for i, row in dataset_val.iterrows():
+    itemid = "%d_Pattern" % row['itemid']
     tag = int(y_pred_Fashion_Pattern[i])
-    df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
-    submission_df = submission_df.append(df)
+    idlist.append(itemid)
+    taglist.append(tag)
     
-    itemid = "%d_Collar Type" % dataset_val['itemid'].values[i]
+    itemid = "%d_Collar Type" % row['itemid']
     tag = int(y_pred_Fashion_Collar[i])
-    df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
-    submission_df = submission_df.append(df)
+    idlist.append(itemid)
+    taglist.append(tag)
     
-    itemid = "%d_Fashion Trend" % dataset_val['itemid'].values[i]
+    itemid = "%d_Fashion Trend" % row['itemid']
     tag = int(y_pred_Fashion_Trend[i])
-    df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
-    submission_df = submission_df.append(df)
+    idlist.append(itemid)
+    taglist.append(tag)
     
-    itemid = "%d_Clothing Material" % dataset_val['itemid'].values[i]
+    itemid = "%d_Clothing Material" % row['itemid']
     tag = int(y_pred_Fashion_Material[i])
-    df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
-    submission_df = submission_df.append(df)
+    idlist.append(itemid)
+    taglist.append(tag)
     
-    itemid = "%d_Sleeves" % dataset_val['itemid'].values[i]
+    itemid = "%d_Sleeves" % row['itemid']
     tag = int(y_pred_Fashion_Sleeves[i])
-    df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
-    submission_df = submission_df.append(df)
+    idlist.append(itemid)
+    taglist.append(tag)
     
     
-del y_pred_Fashion_Pattern, y_pred_Fashion_Collar, y_pred_Fashion_Fashion, y_pred_Fashion_Material, y_pred_Fashion_Sleeves
+del y_pred_Fashion_Pattern, y_pred_Fashion_Collar, y_pred_Fashion_Trend, y_pred_Fashion_Material, y_pred_Fashion_Sleeves
 del dataset_train, dataset_val
+
+print ('Finish writing Fashion to submission df')
     
 #-------------------------------------------------------------------------------------------------------
 
@@ -244,11 +257,15 @@ y_pred_Mobile_OS = train_predict_data(dataset_train,  \
                                       LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
                                       '[^a-zA-Z]')
 
+print ('Finish predicting Mobile OS')
+
 y_pred_Mobile_Features = train_predict_data(dataset_train,  \
                                             dataset_val,    \
                                             'Features',     \
                                             LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
                                             '[^a-zA-Z]')
+
+print ('Finish predicting Mobile Features')
 
 y_pred_Mobile_Network = train_predict_data(dataset_train,  \
                                            dataset_val,    \
@@ -256,11 +273,15 @@ y_pred_Mobile_Network = train_predict_data(dataset_train,  \
                                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
                                            '[^a-zA-Z0-9]')
 
+print ('Finish predicting Mobile Network Connections')
+
 y_pred_Mobile_RAM = train_predict_data(dataset_train,  \
                                        dataset_val,    \
                                        'Memory RAM',     \
                                        LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
                                        '[^a-zA-Z0-9]')
+
+print ('Finish predicting Mobile RAM')
 
 y_pred_Mobile_Brand = train_predict_data(dataset_train,  \
                                          dataset_val,    \
@@ -268,11 +289,15 @@ y_pred_Mobile_Brand = train_predict_data(dataset_train,  \
                                          LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
                                          '[^a-zA-Z]')
 
+print ('Finish predicting Mobile Brand')
+
 y_pred_Mobile_Warranty = train_predict_data(dataset_train,  \
                                             dataset_val,    \
                                             'Warranty Period',     \
                                             LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
                                             '[^a-zA-Z0-9]')
+
+print ('Finish predicting Mobile Warranty')
 
 y_pred_Mobile_Storage = train_predict_data(dataset_train,  \
                                            dataset_val,    \
@@ -280,11 +305,15 @@ y_pred_Mobile_Storage = train_predict_data(dataset_train,  \
                                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
                                            '[^a-zA-Z0-9]')
 
+print ('Finish predicting Mobile Storage')
+
 y_pred_Mobile_Color = train_predict_data(dataset_train,  \
                                          dataset_val,    \
                                          'Color Family',     \
                                          LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
                                          '[^a-zA-Z]')
+
+print ('Finish predicting Mobile Color')
 
 y_pred_Mobile_Model = train_predict_data(dataset_train,  \
                                          dataset_val,    \
@@ -292,11 +321,15 @@ y_pred_Mobile_Model = train_predict_data(dataset_train,  \
                                          LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
                                          '[^a-zA-Z0-9]')
 
+print ('Finish predicting Mobile Model')
+
 y_pred_Mobile_Camera = train_predict_data(dataset_train,  \
                                           dataset_val,    \
                                           'Camera',     \
                                           LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
                                           '[^a-zA-Z0-9]')
+
+print ('Finish predicting Mobile Camera')
 
 y_pred_Mobile_Size = train_predict_data(dataset_train,  \
                                         dataset_val,    \
@@ -304,68 +337,73 @@ y_pred_Mobile_Size = train_predict_data(dataset_train,  \
                                         LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
                                         '[^a-zA-Z0-9]')
 
+print ('Finish predicting Mobile Size')
 
-for i in range(0, len(dataset_val)):
-    itemid = "%d_Operating System" % dataset_val['itemid'].values[i]
+
+for i, row in dataset_val.iterrows():
+    itemid = "%d_Operating System" % row['itemid']
     tag = int(y_pred_Mobile_OS[i])
-    df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
-    submission_df = submission_df.append(df)
+    idlist.append(itemid)
+    taglist.append(tag)
     
-    itemid = "%d_Features" % dataset_val['itemid'].values[i]
+    itemid = "%d_Features" % row['itemid']
     tag = int(y_pred_Mobile_Features[i])
-    df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
-    submission_df = submission_df.append(df)
+    idlist.append(itemid)
+    taglist.append(tag)
     
-    itemid = "%d_Network Connections" % dataset_val['itemid'].values[i]
+    itemid = "%d_Network Connections" % row['itemid']
     tag = int(y_pred_Mobile_Network[i])
-    df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
-    submission_df = submission_df.append(df)
+    idlist.append(itemid)
+    taglist.append(tag)
     
-    itemid = "%d_Memory RAM" % dataset_val['itemid'].values[i]
+    itemid = "%d_Memory RAM" % row['itemid']
     tag = int(y_pred_Mobile_RAM[i])
-    df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
-    submission_df = submission_df.append(df)
+    idlist.append(itemid)
+    taglist.append(tag)
     
-    itemid = "%d_Brand" % dataset_val['itemid'].values[i]
+    itemid = "%d_Brand" % row['itemid']
     tag = int(y_pred_Mobile_Brand[i])
-    df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
-    submission_df = submission_df.append(df)
+    idlist.append(itemid)
+    taglist.append(tag)
     
-    itemid = "%d_Warranty Period" % dataset_val['itemid'].values[i]
+    itemid = "%d_Warranty Period" % row['itemid']
     tag = int(y_pred_Mobile_Warranty[i])
-    df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
-    submission_df = submission_df.append(df)
+    idlist.append(itemid)
+    taglist.append(tag)
      
-    itemid = "%d_Storage Capacity" % dataset_val['itemid'].values[i]
+    itemid = "%d_Storage Capacity" % row['itemid']
     tag = int(y_pred_Mobile_Storage[i])
-    df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
-    submission_df = submission_df.append(df)
+    idlist.append(itemid)
+    taglist.append(tag)
     
-    itemid = "%d_Color Family" % dataset_val['itemid'].values[i]
+    itemid = "%d_Color Family" % row['itemid']
     tag = int(y_pred_Mobile_Color[i])
-    df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
-    submission_df = submission_df.append(df)
+    idlist.append(itemid)
+    taglist.append(tag)
     
-    itemid = "%d_Phone Model" % dataset_val['itemid'].values[i]
+    itemid = "%d_Phone Model" % row['itemid']
     tag = int(y_pred_Mobile_Model[i])
-    df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
-    submission_df = submission_df.append(df)
+    idlist.append(itemid)
+    taglist.append(tag)
     
-    itemid = "%d_Camera" % dataset_val['itemid'].values[i]
+    itemid = "%d_Camera" % row['itemid']
     tag = int(y_pred_Mobile_Camera[i])
-    df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
-    submission_df = submission_df.append(df)
+    idlist.append(itemid)
+    taglist.append(tag)
     
-    itemid = "%d_Phone Screen Size" % dataset_val['itemid'].values[i]
+    itemid = "%d_Phone Screen Size" % row['itemid']
     tag = int(y_pred_Mobile_Size[i])
-    df = pd.DataFrame(data = {'id': [itemid], 'tagging': [tag]})
-    submission_df = submission_df.append(df)
+    idlist.append(itemid)
+    taglist.append(tag)
     
     
 del y_pred_Mobile_OS, y_pred_Mobile_Features, y_pred_Mobile_Network, y_pred_Mobile_RAM, y_pred_Mobile_Brand
 del y_pred_Mobile_Warranty, y_pred_Mobile_Storage, y_pred_Mobile_Color, y_pred_Mobile_Model, y_pred_Mobile_Camera, y_pred_Mobile_Size
 del dataset_train, dataset_val
+
+print ('Finish writing Mobile to submission_df')
     
 #-------------------------------------------------------------------------------------------------------
 
+submission_df = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
 submission_df.to_csv('submission.csv', index=False)
