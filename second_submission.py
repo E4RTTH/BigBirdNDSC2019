@@ -8,10 +8,8 @@ import re
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
-from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
-from sklearn.model_selection import train_test_split
-from sklearn.metrics import confusion_matrix, accuracy_score, f1_score
-from sklearn.linear_model import LogisticRegression
+from sklearn.feature_extraction.text import CountVectorizer
+from sklearn.ensemble import RandomForestClassifier
 
 # Update stopwords database
 nltk.download('stopwords')
@@ -22,16 +20,14 @@ nltk.download('stopwords')
 def preprocess_data(titles, regex):
     ps = PorterStemmer()
     data = []
-    for i in range(0, len(titles)):
-        title = re.sub(regex, ' ', titles[i])
+    for item in titles:
+        title = re.sub(regex, ' ', item)
         title = title.lower()
         title = title.split()
         title = [ps.stem(word) for word in title if not word in set(stopwords.words('english'))]
         title = ' '.join(title)
         data.append(title)
-        
-    del titles
-        
+                
     return data
 
 
@@ -64,17 +60,7 @@ def train_predict_data(dataset_train, dataset_val, attr_name, classifier, regex)
     X_train = X[0:trainCount]
     X_test = X[trainCount:len(X)]
     
-    # Using TF-IDF Vectorizer (Word level) as features
-    #X = vectorize_data(TfidfVectorizer(analyzer='word', token_pattern=r'\w{1,}', max_features=10000), X)
-    
-    # Using TF-IDF Vectorizer (NGram level) as features
-    #X = vectorize_data(TfidfVectorizer(analyzer='word', token_pattern=r'\w{1,}', ngram_range=(2,3), max_features=10000), X)
-    
-    
-    
-    
     # Fitting Logistic Regression one vs all
-    #classifier = LogisticRegression(random_state = 0, multi_class = 'ovr')
     classifier.fit(X_train, y_train)
     
     # Predicting the Test set results
@@ -88,91 +74,86 @@ def train_predict_data(dataset_train, dataset_val, attr_name, classifier, regex)
 #-------------------------------------------------------------------------------------------------------
 
 
-
-
-submission_df = pd.DataFrame(columns=['id', 'tagging'])
-
-# Category: Beauty -------------------------------------------------------------------------------------
-
+# Some declaration
 idlist = []
 taglist = []
+
+# Category: Beauty -------------------------------------------------------------------------------------
 
 # Importing the dataset
 dataset_train = pd.read_csv('beauty_data_info_train_competition.csv', quoting = 3)
 dataset_val = pd.read_csv('beauty_data_info_val_competition.csv', quoting = 3)
 
-y_pred = train_predict_data(dataset_train,  \
-                            dataset_val,    \
-                            'Benefits',     \
-                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
-                            '[^a-zA-Z]')
-
-itemid = [str(i) + "_Benefits" for i in dataset_val['itemid'].values] 
-tag = [int(y) for y in y_pred] 
-idlist.extend(itemid)
-taglist.extend(tag)
+y_pred_Beauty_Benefits = train_predict_data(dataset_train,  \
+                                            dataset_val,    \
+                                            'Benefits',     \
+                                            RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
+                                            '[^a-zA-Z]')
 
 print ('Finish predicting Beauty Benefits')
 
-y_pred = train_predict_data(dataset_train,  \
-                            dataset_val,    \
-                            'Brand',     \
-                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
-                            '[^a-zA-Z]')
-
-itemid = [str(i) + "_Brand" for i in dataset_val['itemid'].values] 
-tag = [int(y) for y in y_pred] 
-idlist.extend(itemid)
-taglist.extend(tag)
+y_pred_Beauty_Brand = train_predict_data(dataset_train,  \
+                                         dataset_val,    \
+                                         'Brand',     \
+                                         RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
+                                         '[^a-zA-Z]')
 
 print ('Finish predicting Beauty Brand')
 
-y_pred = train_predict_data(dataset_train,  \
-                            dataset_val,    \
-                            'Colour_group',     \
-                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
-                            '[^a-zA-Z]')
-
-itemid = [str(i) + "_Colour_group" for i in dataset_val['itemid'].values] 
-tag = [int(y) for y in y_pred] 
-idlist.extend(itemid)
-taglist.extend(tag)
+y_pred_Beauty_Colour = train_predict_data(dataset_train,  \
+                                          dataset_val,    \
+                                          'Colour_group',     \
+                                          RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
+                                          '[^a-zA-Z]')
 
 print ('Finish predicting Beauty Colour')
 
-y_pred = train_predict_data(dataset_train,  \
-                            dataset_val,    \
-                            'Product_texture',     \
-                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
-                            '[^a-zA-Z]')
-
-itemid = [str(i) + "_Product_texture" for i in dataset_val['itemid'].values] 
-tag = [int(y) for y in y_pred] 
-idlist.extend(itemid)
-taglist.extend(tag)
+y_pred_Beauty_Texture = train_predict_data(dataset_train,  \
+                                           dataset_val,    \
+                                           'Product_texture',     \
+                                           RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
+                                           '[^a-zA-Z]')
 
 print ('Finish predicting Beauty Product texture')
 
-y_pred = train_predict_data(dataset_train,  \
-                            dataset_val,    \
-                            'Skin_type',     \
-                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
-                            '[^a-zA-Z]')
-
-itemid = [str(i) + "_Skin_type" for i in dataset_val['itemid'].values] 
-tag = [int(y) for y in y_pred] 
-idlist.extend(itemid)
-taglist.extend(tag)
+y_pred_Beauty_Skin = train_predict_data(dataset_train,  \
+                                        dataset_val,    \
+                                        'Skin_type',     \
+                                        RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
+                                        '[^a-zA-Z]')
 
 print ('Finish predicting Beauty skin type')
 
 
+for i, row in dataset_val.iterrows():
+    itemid = "%d_Benefits" % row['itemid']
+    tag = int(y_pred_Beauty_Benefits[i])
+    idlist.append(itemid)
+    taglist.append(tag)
+    
+    itemid = "%d_Brand" % row['itemid']
+    tag = int(y_pred_Beauty_Brand[i])
+    idlist.append(itemid)
+    taglist.append(tag)
+    
+    itemid = "%d_Colour_group" % row['itemid']
+    tag = int(y_pred_Beauty_Colour[i])
+    idlist.append(itemid)
+    taglist.append(tag)
+    
+    itemid = "%d_Product_texture" % row['itemid']
+    tag = int(y_pred_Beauty_Texture[i])
+    idlist.append(itemid)
+    taglist.append(tag)
+    
+    itemid = "%d_Skin_type" % row['itemid']
+    tag = int(y_pred_Beauty_Skin[i])
+    idlist.append(itemid)
+    taglist.append(tag)
+    
 
-df = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
-df.sort_values(by=['id'])
-submission_df = submission_df.append(df)
-
-del y_pred, dataset_train, dataset_val, df, idlist, taglist, itemid, tag
+del y_pred_Beauty_Benefits, y_pred_Beauty_Brand, y_pred_Beauty_Colour, y_pred_Beauty_Texture, y_pred_Beauty_Skin
+del dataset_train, dataset_val
 
 print ('Finish writing Beauty to submission df')
     
@@ -180,84 +161,80 @@ print ('Finish writing Beauty to submission df')
 
 # Category: Fashion -------------------------------------------------------------------------------------
 
-idlist = []
-taglist = []
-
 # Importing the dataset
 dataset_train = pd.read_csv('fashion_data_info_train_competition.csv', quoting = 3)
 dataset_val = pd.read_csv('fashion_data_info_val_competition.csv', quoting = 3)
 
-y_pred = train_predict_data(dataset_train,  \
-                            dataset_val,    \
-                            'Pattern',     \
-                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
-                            '[^a-zA-Z]')
-
-itemid = [str(i) + "_Pattern" for i in dataset_val['itemid'].values] 
-tag = [int(y) for y in y_pred] 
-idlist.extend(itemid)
-taglist.extend(tag)
+y_pred_Fashion_Pattern = train_predict_data(dataset_train,  \
+                                            dataset_val,    \
+                                            'Pattern',     \
+                                            RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
+                                            '[^a-zA-Z]')
 
 print ('Finish predicting Fashion Pattern')
 
-y_pred = train_predict_data(dataset_train,  \
-                            dataset_val,    \
-                            'Collar Type',     \
-                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
-                            '[^a-zA-Z]')
-
-itemid = [str(i) + "_Collar Type" for i in dataset_val['itemid'].values] 
-tag = [int(y) for y in y_pred] 
-idlist.extend(itemid)
-taglist.extend(tag)
+y_pred_Fashion_Collar = train_predict_data(dataset_train,  \
+                                           dataset_val,    \
+                                           'Collar Type',     \
+                                           RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
+                                           '[^a-zA-Z]')
 
 print ('Finish predicting Fashion Collar')
 
-y_pred = train_predict_data(dataset_train,  \
-                            dataset_val,    \
-                            'Fashion Trend',     \
-                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
-                            '[^a-zA-Z]')
-
-itemid = [str(i) + "_Fashion Trend" for i in dataset_val['itemid'].values] 
-tag = [int(y) for y in y_pred] 
-idlist.extend(itemid)
-taglist.extend(tag)
+y_pred_Fashion_Trend = train_predict_data(dataset_train,  \
+                                          dataset_val,    \
+                                          'Fashion Trend',     \
+                                          RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
+                                          '[^a-zA-Z]')
 
 print ('Finish predicting Fashion Trend')
 
-y_pred = train_predict_data(dataset_train,  \
-                            dataset_val,    \
-                            'Clothing Material',     \
-                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
-                            '[^a-zA-Z]')
-
-itemid = [str(i) + "_Clothing Material" for i in dataset_val['itemid'].values] 
-tag = [int(y) for y in y_pred] 
-idlist.extend(itemid)
-taglist.extend(tag)
+y_pred_Fashion_Material = train_predict_data(dataset_train,  \
+                                             dataset_val,    \
+                                             'Clothing Material',     \
+                                             RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
+                                             '[^a-zA-Z]')
 
 print ('Finish predicting Fashion Material')
 
-y_pred = train_predict_data(dataset_train,  \
-                            dataset_val,    \
-                            'Sleeves',     \
-                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
-                            '[^a-zA-Z]')
-
-itemid = [str(i) + "_Sleeves" for i in dataset_val['itemid'].values] 
-tag = [int(y) for y in y_pred] 
-idlist.extend(itemid)
-taglist.extend(tag)
+y_pred_Fashion_Sleeves = train_predict_data(dataset_train,  \
+                                            dataset_val,    \
+                                            'Sleeves',     \
+                                            RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
+                                            '[^a-zA-Z]')
 
 print ('Finish predicting Fashion Sleeves')
 
 
-df = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
-df.sort_values(by=['id'])
-submission_df = submission_df.append(df)
-
-del y_pred, dataset_train, dataset_val, df, idlist, taglist, itemid, tag
+for i, row in dataset_val.iterrows():
+    itemid = "%d_Pattern" % row['itemid']
+    tag = int(y_pred_Fashion_Pattern[i])
+    idlist.append(itemid)
+    taglist.append(tag)
+    
+    itemid = "%d_Collar Type" % row['itemid']
+    tag = int(y_pred_Fashion_Collar[i])
+    idlist.append(itemid)
+    taglist.append(tag)
+    
+    itemid = "%d_Fashion Trend" % row['itemid']
+    tag = int(y_pred_Fashion_Trend[i])
+    idlist.append(itemid)
+    taglist.append(tag)
+    
+    itemid = "%d_Clothing Material" % row['itemid']
+    tag = int(y_pred_Fashion_Material[i])
+    idlist.append(itemid)
+    taglist.append(tag)
+    
+    itemid = "%d_Sleeves" % row['itemid']
+    tag = int(y_pred_Fashion_Sleeves[i])
+    idlist.append(itemid)
+    taglist.append(tag)
+    
+    
+del y_pred_Fashion_Pattern, y_pred_Fashion_Collar, y_pred_Fashion_Trend, y_pred_Fashion_Material, y_pred_Fashion_Sleeves
+del dataset_train, dataset_val
 
 print ('Finish writing Fashion to submission df')
     
@@ -267,165 +244,163 @@ print ('Finish writing Fashion to submission df')
 
 # Category: Mobile -------------------------------------------------------------------------------------
 
-idlist = []
-taglist = []
-
 # Importing the dataset
 dataset_train = pd.read_csv('mobile_data_info_train_competition.csv', quoting = 3)
 dataset_val = pd.read_csv('mobile_data_info_val_competition.csv', quoting = 3)
 
-y_pred = train_predict_data(dataset_train,  \
-                            dataset_val,    \
-                            'Operating System',     \
-                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
-                            '[^a-zA-Z]')
-
-itemid = [str(i) + "_Operating System" for i in dataset_val['itemid'].values] 
-tag = [int(y) for y in y_pred] 
-idlist.extend(itemid)
-taglist.extend(tag)
+y_pred_Mobile_OS = train_predict_data(dataset_train,  \
+                                      dataset_val,    \
+                                      'Operating System',     \
+                                      RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
+                                      '[^a-zA-Z]')
 
 print ('Finish predicting Mobile OS')
 
-y_pred = train_predict_data(dataset_train,  \
-                            dataset_val,    \
-                            'Features',     \
-                             LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
-                             '[^a-zA-Z]')
-
-itemid = [str(i) + "_Features" for i in dataset_val['itemid'].values] 
-tag = [int(y) for y in y_pred] 
-idlist.extend(itemid)
-taglist.extend(tag)
+y_pred_Mobile_Features = train_predict_data(dataset_train,  \
+                                            dataset_val,    \
+                                            'Features',     \
+                                            RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
+                                            '[^a-zA-Z]')
 
 print ('Finish predicting Mobile Features')
 
-y_pred = train_predict_data(dataset_train,  \
-                            dataset_val,    \
-                            'Network Connections',     \
-                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
-                            '[^a-zA-Z0-9]')
-
-itemid = [str(i) + "_Network Connections" for i in dataset_val['itemid'].values] 
-tag = [int(y) for y in y_pred] 
-idlist.extend(itemid)
-taglist.extend(tag)
+y_pred_Mobile_Network = train_predict_data(dataset_train,  \
+                                           dataset_val,    \
+                                           'Network Connections',     \
+                                           RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
+                                           '[^a-zA-Z0-9]')
 
 print ('Finish predicting Mobile Network Connections')
 
-y_pred = train_predict_data(dataset_train,  \
-                            dataset_val,    \
-                            'Memory RAM',     \
-                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
-                            '[^a-zA-Z0-9]')
-
-itemid = [str(i) + "_Memory RAM" for i in dataset_val['itemid'].values] 
-tag = [int(y) for y in y_pred] 
-idlist.extend(itemid)
-taglist.extend(tag)
+y_pred_Mobile_RAM = train_predict_data(dataset_train,  \
+                                       dataset_val,    \
+                                       'Memory RAM',     \
+                                       RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
+                                       '[^a-zA-Z0-9]')
 
 print ('Finish predicting Mobile RAM')
 
-y_pred = train_predict_data(dataset_train,  \
-                            dataset_val,    \
-                            'Brand',     \
-                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
-                            '[^a-zA-Z]')
-
-itemid = [str(i) + "_Brand" for i in dataset_val['itemid'].values] 
-tag = [int(y) for y in y_pred] 
-idlist.extend(itemid)
-taglist.extend(tag)
+y_pred_Mobile_Brand = train_predict_data(dataset_train,  \
+                                         dataset_val,    \
+                                         'Brand',     \
+                                         RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
+                                         '[^a-zA-Z]')
 
 print ('Finish predicting Mobile Brand')
 
-y_pred = train_predict_data(dataset_train,  \
-                            dataset_val,    \
-                            'Warranty Period',     \
-                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
-                            '[^a-zA-Z0-9]')
-
-itemid = [str(i) + "_Warranty Period" for i in dataset_val['itemid'].values] 
-tag = [int(y) for y in y_pred] 
-idlist.extend(itemid)
-taglist.extend(tag)
+y_pred_Mobile_Warranty = train_predict_data(dataset_train,  \
+                                            dataset_val,    \
+                                            'Warranty Period',     \
+                                            RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
+                                            '[^a-zA-Z0-9]')
 
 print ('Finish predicting Mobile Warranty')
 
-y_pred = train_predict_data(dataset_train,  \
-                            dataset_val,    \
-                            'Storage Capacity',     \
-                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
-                            '[^a-zA-Z0-9]')
-
-itemid = [str(i) + "_Storage Capacity" for i in dataset_val['itemid'].values] 
-tag = [int(y) for y in y_pred] 
-idlist.extend(itemid)
-taglist.extend(tag)
+y_pred_Mobile_Storage = train_predict_data(dataset_train,  \
+                                           dataset_val,    \
+                                           'Storage Capacity',     \
+                                           RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
+                                           '[^a-zA-Z0-9]')
 
 print ('Finish predicting Mobile Storage')
 
-y_pred = train_predict_data(dataset_train,  \
-                            dataset_val,    \
-                            'Color Family',     \
-                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
-                            '[^a-zA-Z]')
-
-itemid = [str(i) + "_Color Family" for i in dataset_val['itemid'].values] 
-tag = [int(y) for y in y_pred] 
-idlist.extend(itemid)
-taglist.extend(tag)
+y_pred_Mobile_Color = train_predict_data(dataset_train,  \
+                                         dataset_val,    \
+                                         'Color Family',     \
+                                         RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
+                                         '[^a-zA-Z]')
 
 print ('Finish predicting Mobile Color')
 
-y_pred = train_predict_data(dataset_train,  \
-                            dataset_val,    \
-                            'Phone Model',     \
-                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
-                            '[^a-zA-Z0-9]')
-
-itemid = [str(i) + "_Phone Model" for i in dataset_val['itemid'].values] 
-tag = [int(y) for y in y_pred] 
-idlist.extend(itemid)
-taglist.extend(tag)
+y_pred_Mobile_Model = train_predict_data(dataset_train,  \
+                                         dataset_val,    \
+                                         'Phone Model',     \
+                                         RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
+                                         '[^a-zA-Z0-9]')
 
 print ('Finish predicting Mobile Model')
 
-y_pred = train_predict_data(dataset_train,  \
-                            dataset_val,    \
-                            'Camera',     \
-                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
-                            '[^a-zA-Z0-9]')
-
-itemid = [str(i) + "_Camera" for i in dataset_val['itemid'].values] 
-tag = [int(y) for y in y_pred] 
-idlist.extend(itemid)
-taglist.extend(tag)
+y_pred_Mobile_Camera = train_predict_data(dataset_train,  \
+                                          dataset_val,    \
+                                          'Camera',     \
+                                          RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
+                                          '[^a-zA-Z0-9]')
 
 print ('Finish predicting Mobile Camera')
 
-y_pred = train_predict_data(dataset_train,  \
-                            dataset_val,    \
-                            'Phone Screen Size',     \
-                            LogisticRegression(random_state = 0, multi_class = 'ovr'),  \
-                            '[^a-zA-Z0-9]')
-
-itemid = [str(i) + "_Phone Screen Size" for i in dataset_val['itemid'].values] 
-tag = [int(y) for y in y_pred] 
-idlist.extend(itemid)
-taglist.extend(tag)
+y_pred_Mobile_Size = train_predict_data(dataset_train,  \
+                                        dataset_val,    \
+                                        'Phone Screen Size',     \
+                                        RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
+                                        '[^a-zA-Z0-9]')
 
 print ('Finish predicting Mobile Size')
 
 
-df = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
-#df.sort_values(by=['id'])
-submission_df = submission_df.append(df)
-
-del y_pred, dataset_train, dataset_val, df, idlist, taglist, itemid, tag
+for i, row in dataset_val.iterrows():
+    itemid = "%d_Operating System" % row['itemid']
+    tag = int(y_pred_Mobile_OS[i])
+    idlist.append(itemid)
+    taglist.append(tag)
+    
+    itemid = "%d_Features" % row['itemid']
+    tag = int(y_pred_Mobile_Features[i])
+    idlist.append(itemid)
+    taglist.append(tag)
+    
+    itemid = "%d_Network Connections" % row['itemid']
+    tag = int(y_pred_Mobile_Network[i])
+    idlist.append(itemid)
+    taglist.append(tag)
+    
+    itemid = "%d_Memory RAM" % row['itemid']
+    tag = int(y_pred_Mobile_RAM[i])
+    idlist.append(itemid)
+    taglist.append(tag)
+    
+    itemid = "%d_Brand" % row['itemid']
+    tag = int(y_pred_Mobile_Brand[i])
+    idlist.append(itemid)
+    taglist.append(tag)
+    
+    itemid = "%d_Warranty Period" % row['itemid']
+    tag = int(y_pred_Mobile_Warranty[i])
+    idlist.append(itemid)
+    taglist.append(tag)
+     
+    itemid = "%d_Storage Capacity" % row['itemid']
+    tag = int(y_pred_Mobile_Storage[i])
+    idlist.append(itemid)
+    taglist.append(tag)
+    
+    itemid = "%d_Color Family" % row['itemid']
+    tag = int(y_pred_Mobile_Color[i])
+    idlist.append(itemid)
+    taglist.append(tag)
+    
+    itemid = "%d_Phone Model" % row['itemid']
+    tag = int(y_pred_Mobile_Model[i])
+    idlist.append(itemid)
+    taglist.append(tag)
+    
+    itemid = "%d_Camera" % row['itemid']
+    tag = int(y_pred_Mobile_Camera[i])
+    idlist.append(itemid)
+    taglist.append(tag)
+    
+    itemid = "%d_Phone Screen Size" % row['itemid']
+    tag = int(y_pred_Mobile_Size[i])
+    idlist.append(itemid)
+    taglist.append(tag)
+    
+    
+del y_pred_Mobile_OS, y_pred_Mobile_Features, y_pred_Mobile_Network, y_pred_Mobile_RAM, y_pred_Mobile_Brand
+del y_pred_Mobile_Warranty, y_pred_Mobile_Storage, y_pred_Mobile_Color, y_pred_Mobile_Model, y_pred_Mobile_Camera, y_pred_Mobile_Size
+del dataset_train, dataset_val
 
 print ('Finish writing Mobile to submission_df')
     
 #-------------------------------------------------------------------------------------------------------
 
+submission_df = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
 submission_df.to_csv('submission.csv', index=False)
