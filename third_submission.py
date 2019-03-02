@@ -167,29 +167,24 @@ print ('Finish predicting Beauty skin type')
 
 for i, row in dataset_val.iterrows():
     itemid = "%d_Benefits" % row['itemid']
-    tag = int(y_pred_Beauty_Benefits[i])
     idlist.append(itemid)
-    taglist.append(tag)
+    taglist.append(y_pred_Beauty_Benefits[i])
     
     itemid = "%d_Brand" % row['itemid']
-    tag = int(y_pred_Beauty_Brand[i])
     idlist.append(itemid)
-    taglist.append(tag)
+    taglist.append(y_pred_Beauty_Brand[i])
     
     itemid = "%d_Colour_group" % row['itemid']
-    tag = int(y_pred_Beauty_Colour[i])
     idlist.append(itemid)
-    taglist.append(tag)
+    taglist.append(y_pred_Beauty_Colour[i])
     
     itemid = "%d_Product_texture" % row['itemid']
-    tag = int(y_pred_Beauty_Texture[i])
     idlist.append(itemid)
-    taglist.append(tag)
+    taglist.append(y_pred_Beauty_Texture[i])
     
     itemid = "%d_Skin_type" % row['itemid']
-    tag = int(y_pred_Beauty_Skin[i])
     idlist.append(itemid)
-    taglist.append(tag)
+    taglist.append(y_pred_Beauty_Skin[i])
     
 
 del y_pred_Beauty_Benefits, y_pred_Beauty_Brand, y_pred_Beauty_Colour, y_pred_Beauty_Texture, y_pred_Beauty_Skin
@@ -248,29 +243,24 @@ print ('Finish predicting Fashion Sleeves')
 
 for i, row in dataset_val.iterrows():
     itemid = "%d_Pattern" % row['itemid']
-    tag = int(y_pred_Fashion_Pattern[i])
     idlist.append(itemid)
-    taglist.append(tag)
+    taglist.append(y_pred_Fashion_Pattern[i])
     
     itemid = "%d_Collar Type" % row['itemid']
-    tag = int(y_pred_Fashion_Collar[i])
     idlist.append(itemid)
-    taglist.append(tag)
+    taglist.append(y_pred_Fashion_Collar[i])
     
     itemid = "%d_Fashion Trend" % row['itemid']
-    tag = int(y_pred_Fashion_Trend[i])
     idlist.append(itemid)
-    taglist.append(tag)
+    taglist.append(y_pred_Fashion_Trend[i])
     
     itemid = "%d_Clothing Material" % row['itemid']
-    tag = int(y_pred_Fashion_Material[i])
     idlist.append(itemid)
-    taglist.append(tag)
+    taglist.append(y_pred_Fashion_Material[i])
     
     itemid = "%d_Sleeves" % row['itemid']
-    tag = int(y_pred_Fashion_Sleeves[i])
     idlist.append(itemid)
-    taglist.append(tag)
+    taglist.append(y_pred_Fashion_Sleeves[i])
     
     
 del y_pred_Fashion_Pattern, y_pred_Fashion_Collar, y_pred_Fashion_Trend, y_pred_Fashion_Material, y_pred_Fashion_Sleeves
@@ -379,59 +369,48 @@ print ('Finish predicting Mobile Size')
 
 for i, row in dataset_val.iterrows():
     itemid = "%d_Operating System" % row['itemid']
-    tag = int(y_pred_Mobile_OS[i])
     idlist.append(itemid)
-    taglist.append(tag)
+    taglist.append(y_pred_Mobile_OS[i])
     
     itemid = "%d_Features" % row['itemid']
-    tag = int(y_pred_Mobile_Features[i])
     idlist.append(itemid)
-    taglist.append(tag)
+    taglist.append(y_pred_Mobile_Features[i])
     
     itemid = "%d_Network Connections" % row['itemid']
-    tag = int(y_pred_Mobile_Network[i])
     idlist.append(itemid)
-    taglist.append(tag)
+    taglist.append(y_pred_Mobile_Network[i])
     
     itemid = "%d_Memory RAM" % row['itemid']
-    tag = int(y_pred_Mobile_RAM[i])
     idlist.append(itemid)
-    taglist.append(tag)
+    taglist.append(y_pred_Mobile_RAM[i])
     
     itemid = "%d_Brand" % row['itemid']
-    tag = int(y_pred_Mobile_Brand[i])
     idlist.append(itemid)
-    taglist.append(tag)
+    taglist.append(y_pred_Mobile_Brand[i])
     
     itemid = "%d_Warranty Period" % row['itemid']
-    tag = int(y_pred_Mobile_Warranty[i])
     idlist.append(itemid)
-    taglist.append(tag)
+    taglist.append(y_pred_Mobile_Warranty[i])
      
     itemid = "%d_Storage Capacity" % row['itemid']
-    tag = int(y_pred_Mobile_Storage[i])
     idlist.append(itemid)
-    taglist.append(tag)
+    taglist.append(y_pred_Mobile_Storage[i])
     
     itemid = "%d_Color Family" % row['itemid']
-    tag = int(y_pred_Mobile_Color[i])
     idlist.append(itemid)
-    taglist.append(tag)
+    taglist.append(y_pred_Mobile_Color[i])
     
     itemid = "%d_Phone Model" % row['itemid']
-    tag = int(y_pred_Mobile_Model[i])
     idlist.append(itemid)
-    taglist.append(tag)
+    taglist.append(y_pred_Mobile_Model[i])
     
     itemid = "%d_Camera" % row['itemid']
-    tag = int(y_pred_Mobile_Camera[i])
     idlist.append(itemid)
-    taglist.append(tag)
+    taglist.append(y_pred_Mobile_Camera[i])
     
     itemid = "%d_Phone Screen Size" % row['itemid']
-    tag = int(y_pred_Mobile_Size[i])
     idlist.append(itemid)
-    taglist.append(tag)
+    taglist.append(y_pred_Mobile_Size[i])
     
     
 del y_pred_Mobile_OS, y_pred_Mobile_Features, y_pred_Mobile_Network, y_pred_Mobile_RAM, y_pred_Mobile_Brand
