@@ -48,25 +48,17 @@ def vectorize_data(vectorizer, data):
     vectors = vectorizer.fit_transform(data).toarray()
     return vectors
 
-def calculate_top_preds(y_pred_proba, topNum):
+def calculate_top_preds(y_classes, y_pred_proba, topNum):
     
     y_pred = []
     
     # 1. Loop through all prediction probabilities datasets
-    # 2. Loop through the number of top predictions to be extracted
-    # 3. Find the max value in probability list
-    # 4. Copy out the index of max probability
-    # 5. Replace the max probability with 0
-    # 6. Repeat from Step 4 until number of top predictions achieved
+    # 2. Sort through the probability list and extract the index of top probabilities based on input argument
+    # 3. Use the indices and extract the class labels 
+    # 4. Format it to space separated probability list
     for probas in y_pred_proba:
-        pred = []
-        for i in range(topNum):
-            m = max(probas)
-            for i, j in enumerate(probas):
-                if j == m:
-                    pred.append(i)
-                    probas[i] = 0
-                    break
+        clsidx = [probas.tolist().index(x) for x in sorted(probas, reverse=True)[:topNum]]
+        pred = [y_classes[i] for i in clsidx]
         strPred = ' '.join(str(x) for x in pred)
         y_pred.append(strPred)
     
@@ -104,7 +96,7 @@ def train_predict_data(dataset_train, dataset_val, attr_name, classifier, regex)
     y_pred_proba = classifier.predict_proba(X_test)
     
     # Calculate top predictions acoording to probabilities
-    y_pred = calculate_top_preds(y_pred_proba, 2)
+    y_pred = calculate_top_preds(classifier.classes_, y_pred_proba, 2)
     
     del X_train, X_test, y_train
         
