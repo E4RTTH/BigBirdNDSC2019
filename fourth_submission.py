@@ -58,7 +58,7 @@ def calculate_top_preds(y_classes, y_pred_proba, topNum):
     # 4. Format it to space separated probability list
     for probas in y_pred_proba:
         clsidx = [probas.tolist().index(x) for x in sorted(probas, reverse=True)[:topNum]]
-        pred = [y_classes[i] for i in clsidx]
+        pred = [int(y_classes[i]) for i in clsidx]
         strPred = ' '.join(str(x) for x in pred)
         y_pred.append(strPred)
     
