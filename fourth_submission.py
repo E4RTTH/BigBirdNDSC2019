@@ -66,7 +66,7 @@ def calculate_top_preds(y_classes, y_pred_proba, topNum):
 
 
 
-def train_predict_data(dataset_train, dataset_val, attr_name, classifier, regex):
+def train_predict_data(dataset_train, dataset_val, attr_name, classifier, regex, predNum):
     
     # Some declaration and initialization
     X_train = []
@@ -96,19 +96,19 @@ def train_predict_data(dataset_train, dataset_val, attr_name, classifier, regex)
     y_pred_proba = classifier.predict_proba(X_test)
     
     # Calculate top predictions acoording to probabilities
-    y_pred = calculate_top_preds(classifier.classes_, y_pred_proba, 2)
-    
-    del X_train, X_test, y_train
-        
+    y_pred = calculate_top_preds(classifier.classes_, y_pred_proba, predNum)
+            
     return y_pred
 
 
 #-------------------------------------------------------------------------------------------------------
 
 
-# Some declaration
+# Some declaration & initialization
 idlist = []
 taglist = []
+classifier = RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0)
+predictionNum = 2
 
 # Category: Beauty -------------------------------------------------------------------------------------
 
@@ -119,40 +119,45 @@ dataset_val = pd.read_csv('beauty_data_info_val_competition.csv', quoting = 3)
 y_pred_Beauty_Benefits = train_predict_data(dataset_train,  \
                                             dataset_val,    \
                                             'Benefits',     \
-                                            RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
-                                            '[^a-zA-Z]')
+                                            classifier,  \
+                                            '[^a-zA-Z]', \
+                                            predictionNum)
 
 print ('Finish predicting Beauty Benefits')
 
 y_pred_Beauty_Brand = train_predict_data(dataset_train,  \
                                          dataset_val,    \
                                          'Brand',     \
-                                         RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
-                                         '[^a-zA-Z]')
+                                         classifier,  \
+                                         '[^a-zA-Z]', \
+                                         predictionNum)
 
 print ('Finish predicting Beauty Brand')
 
 y_pred_Beauty_Colour = train_predict_data(dataset_train,  \
                                           dataset_val,    \
                                           'Colour_group',     \
-                                          RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
-                                          '[^a-zA-Z]')
+                                          classifier,  \
+                                          '[^a-zA-Z]', \
+                                          predictionNum)
 
 print ('Finish predicting Beauty Colour')
 
 y_pred_Beauty_Texture = train_predict_data(dataset_train,  \
                                            dataset_val,    \
                                            'Product_texture',     \
-                                           RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
-                                           '[^a-zA-Z]')
+                                           classifier,  \
+                                           '[^a-zA-Z]', \
+                                           predictionNum)
 
 print ('Finish predicting Beauty Product texture')
 
 y_pred_Beauty_Skin = train_predict_data(dataset_train,  \
                                         dataset_val,    \
                                         'Skin_type',     \
-                                        RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
-                                        '[^a-zA-Z]')
+                                        classifier,  \
+                                        '[^a-zA-Z]', \
+                                        predictionNum)
 
 print ('Finish predicting Beauty skin type')
 
@@ -195,40 +200,45 @@ dataset_val = pd.read_csv('fashion_data_info_val_competition.csv', quoting = 3)
 y_pred_Fashion_Pattern = train_predict_data(dataset_train,  \
                                             dataset_val,    \
                                             'Pattern',     \
-                                            RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
-                                            '[^a-zA-Z]')
+                                            classifier,  \
+                                            '[^a-zA-Z]', \
+                                            predictionNum)
 
 print ('Finish predicting Fashion Pattern')
 
 y_pred_Fashion_Collar = train_predict_data(dataset_train,  \
                                            dataset_val,    \
                                            'Collar Type',     \
-                                           RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
-                                           '[^a-zA-Z]')
+                                           classifier,  \
+                                           '[^a-zA-Z]', \
+                                           predictionNum)
 
 print ('Finish predicting Fashion Collar')
 
 y_pred_Fashion_Trend = train_predict_data(dataset_train,  \
                                           dataset_val,    \
                                           'Fashion Trend',     \
-                                          RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
-                                          '[^a-zA-Z]')
-
+                                          classifier,  \
+                                          '[^a-zA-Z]', \
+                                          predictionNum)
+ 
 print ('Finish predicting Fashion Trend')
 
 y_pred_Fashion_Material = train_predict_data(dataset_train,  \
                                              dataset_val,    \
                                              'Clothing Material',     \
-                                             RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
-                                             '[^a-zA-Z]')
+                                             classifier,  \
+                                             '[^a-zA-Z]', \
+                                             predictionNum)
 
 print ('Finish predicting Fashion Material')
 
 y_pred_Fashion_Sleeves = train_predict_data(dataset_train,  \
                                             dataset_val,    \
                                             'Sleeves',     \
-                                            RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
-                                            '[^a-zA-Z]')
+                                            classifier,  \
+                                            '[^a-zA-Z]', \
+                                            predictionNum)
 
 print ('Finish predicting Fashion Sleeves')
 
@@ -273,88 +283,99 @@ dataset_val = pd.read_csv('mobile_data_info_val_competition.csv', quoting = 3)
 y_pred_Mobile_OS = train_predict_data(dataset_train,  \
                                       dataset_val,    \
                                       'Operating System',     \
-                                      RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
-                                      '[^a-zA-Z]')
+                                      classifier,  \
+                                      '[^a-zA-Z]', \
+                                      predictionNum)
 
 print ('Finish predicting Mobile OS')
 
 y_pred_Mobile_Features = train_predict_data(dataset_train,  \
                                             dataset_val,    \
                                             'Features',     \
-                                            RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
-                                            '[^a-zA-Z]')
+                                            classifier,  \
+                                            '[^a-zA-Z]', \
+                                            predictionNum)
 
 print ('Finish predicting Mobile Features')
 
 y_pred_Mobile_Network = train_predict_data(dataset_train,  \
                                            dataset_val,    \
                                            'Network Connections',     \
-                                           RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
-                                           '[^a-zA-Z0-9]')
+                                           classifier,  \
+                                           '[^a-zA-Z0-9]', \
+                                           predictionNum)
 
 print ('Finish predicting Mobile Network Connections')
 
 y_pred_Mobile_RAM = train_predict_data(dataset_train,  \
                                        dataset_val,    \
                                        'Memory RAM',     \
-                                       RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
-                                       '[^a-zA-Z0-9]')
+                                       classifier,  \
+                                       '[^a-zA-Z0-9]', \
+                                       predictionNum)
 
 print ('Finish predicting Mobile RAM')
 
 y_pred_Mobile_Brand = train_predict_data(dataset_train,  \
                                          dataset_val,    \
                                          'Brand',     \
-                                         RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
-                                         '[^a-zA-Z]')
+                                         classifier,  \
+                                         '[^a-zA-Z]', \
+                                         predictionNum)
 
 print ('Finish predicting Mobile Brand')
 
 y_pred_Mobile_Warranty = train_predict_data(dataset_train,  \
                                             dataset_val,    \
                                             'Warranty Period',     \
-                                            RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
-                                            '[^a-zA-Z0-9]')
+                                            classifier,  \
+                                            '[^a-zA-Z0-9]', \
+                                            predictionNum)
 
 print ('Finish predicting Mobile Warranty')
 
 y_pred_Mobile_Storage = train_predict_data(dataset_train,  \
                                            dataset_val,    \
                                            'Storage Capacity',     \
-                                           RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
-                                           '[^a-zA-Z0-9]')
+                                           classifier,  \
+                                           '[^a-zA-Z0-9]', \
+                                           predictionNum)
 
 print ('Finish predicting Mobile Storage')
 
 y_pred_Mobile_Color = train_predict_data(dataset_train,  \
                                          dataset_val,    \
                                          'Color Family',     \
-                                         RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
-                                         '[^a-zA-Z]')
+                                         classifier,  \
+                                         '[^a-zA-Z]', \
+                                         predictionNum)
 
 print ('Finish predicting Mobile Color')
 
 y_pred_Mobile_Model = train_predict_data(dataset_train,  \
                                          dataset_val,    \
                                          'Phone Model',     \
-                                         RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
-                                         '[^a-zA-Z0-9]')
+                                         classifier,  \
+                                         '[^a-zA-Z0-9]', \
+                                         predictionNum)
 
 print ('Finish predicting Mobile Model')
 
 y_pred_Mobile_Camera = train_predict_data(dataset_train,  \
                                           dataset_val,    \
                                           'Camera',     \
-                                          RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
-                                          '[^a-zA-Z0-9]')
+                                          classifier,  \
+                                          '[^a-zA-Z0-9]', \
+                                          predictionNum)
 
 print ('Finish predicting Mobile Camera')
 
 y_pred_Mobile_Size = train_predict_data(dataset_train,  \
                                         dataset_val,    \
                                         'Phone Screen Size',     \
-                                        RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0),  \
-                                        '[^a-zA-Z0-9]')
+                                        classifier,  \
+                                        '[^a-zA-Z0-9]', \
+                                        predictionNum)
 
 print ('Finish predicting Mobile Size')
 
