@@ -143,13 +143,13 @@ def cascaded_train_predict_data(dataset_train, dataset_val, attr_name, classifie
     
     Xtb = Xt_train
     yb = dataset_train_attr['Brand'].values
-    classifier2 = classifier
+    classifier2 = RandomForestClassifier(n_estimators = 300, criterion = 'entropy', random_state = 0)
     classifier2.fit(Xtb, yb)
     y_predb = classifier2.predict(Xt_test)
     
     Xtm = Xt_train
     ym = dataset_train_attr['Phone Model'].values
-    classifier3 = classifier
+    classifier3 = RandomForestClassifier(n_estimators = 300, criterion = 'entropy', random_state = 0)
     classifier3.fit(Xtm, ym)
     y_predm = classifier3.predict(Xt_test)
     
@@ -526,4 +526,4 @@ print ('Finish writing Mobile to submission_df')
 #-------------------------------------------------------------------------------------------------------
 
 submission_df = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
-submission_df.to_csv('submission.csv', index=False)
+submission_df.to_csv('submission5.csv', index=False)
