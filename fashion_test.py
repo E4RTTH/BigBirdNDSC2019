@@ -12,6 +12,7 @@ from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import confusion_matrix, accuracy_score, f1_score
 from sklearn.linear_model import LogisticRegression
+from sklearn.ensemble import RandomForestClassifier
 
 
 # Functions definition --------------------------------------------------------------------------------
@@ -96,76 +97,21 @@ dataset = pd.read_csv('fashion_data_info_train_competition.csv', quoting = 3)
 # Update stopwords database
 nltk.download('stopwords')
 
-cm_Pattern, acc_Pattern, f1_Pattern = train_predict_data(dataset, 'Pattern', LogisticRegression(random_state = 0, multi_class = 'ovr'))
+classifier = RandomForestClassifier(n_estimators = 300, criterion = 'entropy', random_state = 0)
+
+cm_Pattern, acc_Pattern, f1_Pattern = train_predict_data(dataset, 'Pattern', classifier)
 print("Pattern: acc=", acc_Pattern, ", f1=", f1_Pattern)
 
-cm_Collar, acc_Collar, f1_Collar = train_predict_data(dataset, 'Collar Type', LogisticRegression(random_state = 0, multi_class = 'ovr'))
+cm_Collar, acc_Collar, f1_Collar = train_predict_data(dataset, 'Collar Type', classifier)
 print("Collar Type: acc=", acc_Collar, ", f1=", f1_Collar)
 
-cm_Sleeves, acc_Sleeves, f1_Sleeves = train_predict_data(dataset, 'Sleeves', LogisticRegression(random_state = 0, multi_class = 'ovr'))
+cm_Sleeves, acc_Sleeves, f1_Sleeves = train_predict_data(dataset, 'Sleeves', classifier)
 print("Sleeves: acc=", acc_Sleeves, ", f1=", f1_Sleeves)
 
-cm_Trend, acc_Trend, f1_Trend = train_predict_data(dataset, 'Fashion Trend', LogisticRegression(random_state = 0, multi_class = 'ovr'))
+cm_Trend, acc_Trend, f1_Trend = train_predict_data(dataset, 'Fashion Trend', classifier)
 print("Fashion Trend: acc=", acc_Trend, ", f1=", f1_Trend)
 
-cm_Material, acc_Material, f1_Material = train_predict_data(dataset, 'Clothing Material', LogisticRegression(random_state = 0, multi_class = 'ovr'))
+cm_Material, acc_Material, f1_Material = train_predict_data(dataset, 'Clothing Material', classifier)
 print("Clothing Material: acc=", acc_Material, ", f1=", f1_Material)
-
-
-
-
-"""
-# Processing Benefits attribute tags
-#----------------------------------------------------------------------------------------------
-
-X = []
-
-# Remove NaN entries from Benefits attribute
-dataset_BeautyBenefits = dataset.dropna(subset=['Benefits'])
-
-#titles =  dataset_BeautyBenefits['title'].values
-
-# Cleaning the texts
-X = preprocess_data(dataset_BeautyBenefits['title'].values)
-
-# Using Count Vectorizer as features
-X = vectorize_data(CountVectorizer(max_features = 10000), X)
-
-# Using TF-IDF Vectorizer (Word level) as features
-#X = vectorize_data(TfidfVectorizer(analyzer='word', token_pattern=r'\w{1,}', max_features=10000), X)
-
-# Using TF-IDF Vectorizer (NGram level) as features
-#X = vectorize_data(TfidfVectorizer(analyzer='word', token_pattern=r'\w{1,}', ngram_range=(2,3), max_features=10000), X)
-
-
-y = dataset_BeautyBenefits['Benefits'].values
-
-
-# Splitting the dataset into the Training set and Test set
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, random_state = 0)
-
-del X, y
-
-# Fitting Logistic Regression one vs all
-classifier = LogisticRegression(random_state = 0, multi_class = 'ovr')
-classifier.fit(X_train, y_train)
-
-# Predicting the Test set results
-y_pred = classifier.predict(X_test)
-
-# Making the Confusion Matrix
-cm_BeautyBenefits = confusion_matrix(y_test, y_pred)
-
-# Calculate accuracy score
-accuracy_BeautyBenefits = accuracy_score(y_test, y_pred)
-
-# Calculate F1 score
-f1_BeautyBenefits = f1_score(y_test, y_pred, average='weighted')
-
-del X_train, X_test, y_train, y_test, y_pred
-
-#----------------------------------------------------------------------------------------------
-
-"""
 
 
