@@ -143,13 +143,13 @@ def cascaded_train_predict_data(dataset_train, dataset_val, attr_name, classifie
     
     Xtb = Xt_train
     yb = dataset_train_attr['Brand'].values
-    classifier2 = RandomForestClassifier(n_estimators = 300, criterion = 'entropy', random_state = 0)
+    classifier2 = RandomForestClassifier(n_estimators = 250, criterion = 'entropy', random_state = 0)
     classifier2.fit(Xtb, yb)
     y_predb = classifier2.predict(Xt_test)
     
     Xtm = Xt_train
     ym = dataset_train_attr['Phone Model'].values
-    classifier3 = RandomForestClassifier(n_estimators = 300, criterion = 'entropy', random_state = 0)
+    classifier3 = RandomForestClassifier(n_estimators = 250, criterion = 'entropy', random_state = 0)
     classifier3.fit(Xtm, ym)
     y_predm = classifier3.predict(Xt_test)
     
@@ -176,7 +176,7 @@ def cascaded_train_predict_data(dataset_train, dataset_val, attr_name, classifie
 # Some declaration & initialization
 idlist = []
 taglist = []
-classifier300 = RandomForestClassifier(n_estimators = 300, criterion = 'entropy', random_state = 0)
+classifier250 = RandomForestClassifier(n_estimators = 250, criterion = 'entropy', random_state = 0)
 classifier150 = RandomForestClassifier(n_estimators = 150, criterion = 'entropy', random_state = 0)
 predictionNum = 2
 
@@ -363,7 +363,7 @@ dataset_val = pd.read_csv('mobile_data_info_val_competition.csv', quoting = 3)
 y_pred_Mobile_OS = train_predict_data(dataset_train,  \
                                       dataset_val,    \
                                       'Operating System',     \
-                                      classifier300,  \
+                                      classifier250,  \
                                       '[^a-zA-Z]', \
                                       predictionNum,\
                                       10000)
@@ -373,7 +373,7 @@ print ('Finish predicting Mobile OS')
 y_pred_Mobile_Network = train_predict_data(dataset_train,  \
                                            dataset_val,    \
                                            'Network Connections',     \
-                                           classifier300,  \
+                                           classifier250,  \
                                            '[^a-zA-Z0-9]', \
                                            predictionNum,\
                                            10000)
@@ -383,7 +383,7 @@ print ('Finish predicting Mobile Network Connections')
 y_pred_Mobile_RAM = train_predict_data(dataset_train,  \
                                        dataset_val,    \
                                        'Memory RAM',     \
-                                       classifier300,  \
+                                       classifier250,  \
                                        '[^a-zA-Z0-9]', \
                                        predictionNum,\
                                        10000)
@@ -393,7 +393,7 @@ print ('Finish predicting Mobile RAM')
 y_pred_Mobile_Brand = train_predict_data(dataset_train,  \
                                          dataset_val,    \
                                          'Brand',     \
-                                         classifier300,  \
+                                         classifier250,  \
                                          '[^a-zA-Z]', \
                                          predictionNum,\
                                          10000)
@@ -403,7 +403,7 @@ print ('Finish predicting Mobile Brand')
 y_pred_Mobile_Warranty = train_predict_data(dataset_train,  \
                                             dataset_val,    \
                                             'Warranty Period',     \
-                                            classifier300,  \
+                                            classifier250,  \
                                             '[^a-zA-Z0-9]', \
                                             predictionNum,\
                                             10000)
@@ -413,7 +413,7 @@ print ('Finish predicting Mobile Warranty')
 y_pred_Mobile_Storage = train_predict_data(dataset_train,  \
                                            dataset_val,    \
                                            'Storage Capacity',     \
-                                           classifier300,  \
+                                           classifier250,  \
                                            '[^a-zA-Z0-9]', \
                                            predictionNum,\
                                            10000)
@@ -423,7 +423,7 @@ print ('Finish predicting Mobile Storage')
 y_pred_Mobile_Color = train_predict_data(dataset_train,  \
                                          dataset_val,    \
                                          'Color Family',     \
-                                         classifier300,  \
+                                         classifier250,  \
                                          '[^a-zA-Z]', \
                                          predictionNum,\
                                          10000)
@@ -433,7 +433,7 @@ print ('Finish predicting Mobile Color')
 y_pred_Mobile_Model = train_predict_data(dataset_train,  \
                                          dataset_val,    \
                                          'Phone Model',     \
-                                         classifier300,  \
+                                         classifier250,  \
                                          '[^a-zA-Z0-9]', \
                                          predictionNum,\
                                          10000)
@@ -443,7 +443,7 @@ print ('Finish predicting Mobile Model')
 y_pred_Mobile_Camera = train_predict_data(dataset_train,  \
                                           dataset_val,    \
                                           'Camera',     \
-                                          classifier300,  \
+                                          classifier250,  \
                                           '[^a-zA-Z0-9]', \
                                           predictionNum,\
                                           10000)
@@ -453,7 +453,7 @@ print ('Finish predicting Mobile Camera')
 y_pred_Mobile_Features = cascaded_train_predict_data(dataset_train,  \
                                                      dataset_val,    \
                                                      'Features',     \
-                                                     classifier300,  \
+                                                     classifier250,  \
                                                      '[^a-zA-Z]', \
                                                      predictionNum,\
                                                      10000)
@@ -463,7 +463,7 @@ print ('Finish predicting Mobile Features')
 y_pred_Mobile_Size = cascaded_train_predict_data(dataset_train,  \
                                                  dataset_val,    \
                                                  'Phone Screen Size',     \
-                                                 classifier300,  \
+                                                 classifier250,  \
                                                  '[^a-zA-Z0-9]', \
                                                  predictionNum,\
                                                  10000)
