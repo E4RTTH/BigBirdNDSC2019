@@ -139,19 +139,21 @@ def cascaded_train_predict_data(dataset_train, dataset_val, attr_name, classifie
     classifier1 = classifier
     
     classifier1.fit(X_train, y_train)
-    
+    del X_train, y_train, Xbm_train, Xb_train, Xm_train
     
     Xtb = Xt_train
     yb = dataset_train_attr['Brand'].values
-    classifier2 = RandomForestClassifier(n_estimators = 250, criterion = 'entropy', random_state = 0)
+    classifier2 = RandomForestClassifier(n_estimators = 150, criterion = 'entropy', random_state = 0)
     classifier2.fit(Xtb, yb)
     y_predb = classifier2.predict(Xt_test)
+    del Xtb, yb
     
     Xtm = Xt_train
     ym = dataset_train_attr['Phone Model'].values
-    classifier3 = RandomForestClassifier(n_estimators = 250, criterion = 'entropy', random_state = 0)
+    classifier3 = RandomForestClassifier(n_estimators = 150, criterion = 'entropy', random_state = 0)
     classifier3.fit(Xtm, ym)
     y_predm = classifier3.predict(Xt_test)
+    del Xtm, ym
     
     y_predb = [int(i) for i in y_predb]
     y_predm = [int(i) for i in y_predm]
@@ -176,8 +178,10 @@ def cascaded_train_predict_data(dataset_train, dataset_val, attr_name, classifie
 # Some declaration & initialization
 idlist = []
 taglist = []
-classifier250 = RandomForestClassifier(n_estimators = 250, criterion = 'entropy', random_state = 0)
+classifier250 = RandomForestClassifier(n_estimators = 300, criterion = 'entropy', random_state = 0)
 classifier150 = RandomForestClassifier(n_estimators = 150, criterion = 'entropy', random_state = 0)
+
+classifier100 = RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0)
 predictionNum = 2
 
 # Category: Beauty -------------------------------------------------------------------------------------
@@ -263,6 +267,11 @@ del y_pred_Beauty_Benefits, y_pred_Beauty_Brand, y_pred_Beauty_Colour, y_pred_Be
 del dataset_train, dataset_val
 
 print ('Finish writing Beauty to submission df')
+
+p1 = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
+p1.to_csv('submission5p1.csv', index=False)
+
+del p1
     
 #-------------------------------------------------------------------------------------------------------
 
@@ -349,12 +358,19 @@ del y_pred_Fashion_Pattern, y_pred_Fashion_Collar, y_pred_Fashion_Trend, y_pred_
 del dataset_train, dataset_val
 
 print ('Finish writing Fashion to submission df')
+
+p2 = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
+p2.to_csv('submission5p2.csv', index=False)
+
+del p2
     
 #-------------------------------------------------------------------------------------------------------
 
 
 
 # Category: Mobile -------------------------------------------------------------------------------------
+
+submission_df = pd.read_csv("submission5p2.csv")
 
 # Importing the dataset
 dataset_train = pd.read_csv('mobile_data_info_train_competition.csv', quoting = 3)
@@ -433,7 +449,7 @@ print ('Finish predicting Mobile Color')
 y_pred_Mobile_Model = train_predict_data(dataset_train,  \
                                          dataset_val,    \
                                          'Phone Model',     \
-                                         classifier250,  \
+                                         classifier100,  \
                                          '[^a-zA-Z0-9]', \
                                          predictionNum,\
                                          10000)
@@ -453,7 +469,7 @@ print ('Finish predicting Mobile Camera')
 y_pred_Mobile_Features = cascaded_train_predict_data(dataset_train,  \
                                                      dataset_val,    \
                                                      'Features',     \
-                                                     classifier250,  \
+                                                     classifier150,  \
                                                      '[^a-zA-Z]', \
                                                      predictionNum,\
                                                      10000)
@@ -463,7 +479,7 @@ print ('Finish predicting Mobile Features')
 y_pred_Mobile_Size = cascaded_train_predict_data(dataset_train,  \
                                                  dataset_val,    \
                                                  'Phone Screen Size',     \
-                                                 classifier250,  \
+                                                 classifier150,  \
                                                  '[^a-zA-Z0-9]', \
                                                  predictionNum,\
                                                  10000)
@@ -525,5 +541,6 @@ print ('Finish writing Mobile to submission_df')
     
 #-------------------------------------------------------------------------------------------------------
 
-submission_df = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
-submission_df.to_csv('submission5.csv', index=False)
+submission_dfp3 = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
+submission = submission_df.append(submission_dfp3)
+submission.to_csv('submission5a.csv', index=False)
