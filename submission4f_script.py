@@ -109,6 +109,7 @@ idlist = []
 taglist = []
 classifier300 = RandomForestClassifier(n_estimators = 300, criterion = 'entropy', random_state = 0)
 classifier150 = RandomForestClassifier(n_estimators = 150, criterion = 'entropy', random_state = 0)
+classifier100 = RandomForestClassifier(n_estimators = 100, criterion = 'entropy', random_state = 0)
 predictionNum = 2
 
 # Category: Beauty -------------------------------------------------------------------------------------
@@ -287,6 +288,8 @@ print ('Finish writing Fashion to submission df')
 
 # Category: Mobile -------------------------------------------------------------------------------------
 
+submission_df = pd.read_csv("submission5p2.csv")
+
 # Importing the dataset
 dataset_train = pd.read_csv('mobile_data_info_train_competition.csv', quoting = 3)
 dataset_val = pd.read_csv('mobile_data_info_val_competition.csv', quoting = 3)
@@ -344,7 +347,7 @@ print ('Finish predicting Mobile Brand')
 y_pred_Mobile_Warranty = train_predict_data(dataset_train,  \
                                             dataset_val,    \
                                             'Warranty Period',     \
-                                            classifier300,  \
+                                            classifier100,  \
                                             '[^a-zA-Z0-9]', \
                                             predictionNum,\
                                             10000)
@@ -354,7 +357,7 @@ print ('Finish predicting Mobile Warranty')
 y_pred_Mobile_Storage = train_predict_data(dataset_train,  \
                                            dataset_val,    \
                                            'Storage Capacity',     \
-                                           classifier300,  \
+                                           classifier150,  \
                                            '[^a-zA-Z0-9]', \
                                            predictionNum,\
                                            10000)
@@ -364,7 +367,7 @@ print ('Finish predicting Mobile Storage')
 y_pred_Mobile_Color = train_predict_data(dataset_train,  \
                                          dataset_val,    \
                                          'Color Family',     \
-                                         classifier300,  \
+                                         classifier150,  \
                                          '[^a-zA-Z]', \
                                          predictionNum,\
                                          10000)
@@ -374,7 +377,7 @@ print ('Finish predicting Mobile Color')
 y_pred_Mobile_Model = train_predict_data(dataset_train,  \
                                          dataset_val,    \
                                          'Phone Model',     \
-                                         classifier300,  \
+                                         classifier100,  \
                                          '[^a-zA-Z0-9]', \
                                          predictionNum,\
                                          10000)
@@ -384,7 +387,7 @@ print ('Finish predicting Mobile Model')
 y_pred_Mobile_Camera = train_predict_data(dataset_train,  \
                                           dataset_val,    \
                                           'Camera',     \
-                                          classifier300,  \
+                                          classifier150,  \
                                           '[^a-zA-Z0-9]', \
                                           predictionNum,\
                                           10000)
@@ -394,7 +397,7 @@ print ('Finish predicting Mobile Camera')
 y_pred_Mobile_Size = train_predict_data(dataset_train,  \
                                         dataset_val,    \
                                         'Phone Screen Size',     \
-                                        classifier300,  \
+                                        classifier150,  \
                                         '[^a-zA-Z0-9]', \
                                         predictionNum,\
                                         10000)
@@ -455,6 +458,8 @@ del dataset_train, dataset_val
 print ('Finish writing Mobile to submission_df')
     
 #-------------------------------------------------------------------------------------------------------
-
-submission_df = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
-submission_df.to_csv('submission4f.csv', index=False)
+submission_dfp3 = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
+submission = submission_df.append(submission_dfp3)
+submission.to_csv('submission4f.csv', index=False)
+#submission_df = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
+#submission_df.to_csv('submission4f.csv', index=False)

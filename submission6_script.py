@@ -212,6 +212,11 @@ del y_pred_Beauty_Benefits, y_pred_Beauty_Brand, y_pred_Beauty_Colour, y_pred_Be
 del dataset_train, dataset_val
 
 print ('Finish writing Beauty to submission df')
+
+p1 = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
+p1.to_csv('submission6p1.csv', index=False)
+
+del p1
     
 #-------------------------------------------------------------------------------------------------------
 
@@ -303,12 +308,19 @@ del y_pred_Fashion_Pattern, y_pred_Fashion_Collar, y_pred_Fashion_Trend, y_pred_
 del dataset_train, dataset_val
 
 print ('Finish writing Fashion to submission df')
+
+p2 = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
+p2.to_csv('submission6p2.csv', index=False)
+
+del p2
     
 #-------------------------------------------------------------------------------------------------------
 
 
 
 # Category: Mobile -------------------------------------------------------------------------------------
+
+submission_df = pd.read_csv("submission5p2.csv")
 
 # Importing the dataset
 dataset_train = pd.read_csv('mobile_data_info_train_competition.csv', quoting = 3)
@@ -490,5 +502,11 @@ print ('Finish writing Mobile to submission_df')
     
 #-------------------------------------------------------------------------------------------------------
 
-submission_df = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
-submission_df.to_csv('submission.csv', index=False)
+
+submission_dfp3 = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
+submission = submission_df.append(submission_dfp3)
+submission.to_csv('submission6a.csv', index=False)
+
+
+#submission_df = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
+#submission_df.to_csv('submission.csv', index=False)
