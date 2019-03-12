@@ -112,7 +112,7 @@ predictionNum = 2
 # CHANGE THIS SECTION!!---------------------------------------------------------------------------------
 
 # Change the base result file you want to use 
-resultdf = pd.read_csv('submission7a.csv')
+resultdf = pd.read_csv('submission7b.csv')
 
 # Change to the source dataset you want to rerun
 dataset_train = pd.read_csv('mobile_data_info_train_competition.csv', quoting = 3)
@@ -153,4 +153,4 @@ print ('Finish writing to list')
 #-------------------------------------------------------------------------------------------------------
 submission = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
 resultdf = resultdf.append(submission)
-resultdf.to_csv('submission7b.csv', index=False)
+resultdf.to_csv('submission7c.csv', index=False)
