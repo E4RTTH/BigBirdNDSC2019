@@ -460,6 +460,6 @@ print ('Finish writing Mobile to submission_df')
 #-------------------------------------------------------------------------------------------------------
 submission_dfp3 = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
 submission = submission_df.append(submission_dfp3)
-submission.to_csv('submission4f.csv', index=False)
+submission.to_csv('submission4g.csv', index=False)
 #submission_df = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
 #submission_df.to_csv('submission4f.csv', index=False)
