@@ -119,10 +119,10 @@ dataset_train = pd.read_csv('mobile_data_info_train_competition.csv', quoting = 
 dataset_val = pd.read_csv('mobile_data_info_val_competition.csv', quoting = 3)
 
 # Change to the attribute name you want to rerun
-attr_name = 'Features'
+attr_name = 'Color Family'
 
 # Change to the classifier you want to use
-classifier = RandomForestClassifier(n_estimators = 300, criterion = 'entropy', random_state = 0, max_depth = 140)
+classifier = RandomForestClassifier(n_estimators = 300, criterion = 'entropy', random_state = 0, max_depth = 130)
 
 # Change the regex term
 regex = '[^a-zA-Z0-9]'
@@ -153,4 +153,4 @@ print ('Finish writing to list')
 #-------------------------------------------------------------------------------------------------------
 submission = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
 resultdf = resultdf.append(submission)
-resultdf.to_csv('submission7a.csv', index=False)
+resultdf.to_csv('submission7b.csv', index=False)
