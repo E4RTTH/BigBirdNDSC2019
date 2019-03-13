@@ -22,6 +22,10 @@ def preprocess_data(titles, regex):
     ps = PorterStemmer()
     data = []
     for item in titles:
+        
+        #Remove space between number and inch
+        title = re.sub('(?<=(\d)) (?=(inch))', '', item) 
+        
         # Replace regex term into space (non letters & non numbers)
         title = re.sub(regex, ' ', item)
         
@@ -125,7 +129,7 @@ attr_name = 'Phone Screen Size'
 classifier = RandomForestClassifier(n_estimators = 300, criterion = 'entropy', random_state = 0, min_samples_split = 6)
 
 # Change the regex term
-regex = '[^a-zA-Z0-9]'
+regex = '[^a-zA-Z0-9\.]'
 
 # Change the vectorizer count
 vecCount = 10000
