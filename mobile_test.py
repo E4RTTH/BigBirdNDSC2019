@@ -90,7 +90,7 @@ classifier = RandomForestClassifier(n_estimators = 300, criterion = 'entropy', r
 acc_OS, f1_OS = train_predict_data(dataset, 'Operating System', classifier, '[^a-zA-Z]')
 print("OS: acc=", acc_OS, ", f1=", f1_OS)
 
-acc_Features, f1_Features = train_predict_data(dataset, 'Features', classifier, '[^a-zA-Z]')
+acc_Features, f1_Features = train_predict_data(dataset, 'Features', classifier, '[^a-zA-Z0-9]')
 print("Features: acc=", acc_Features, ", f1=", f1_Features)
 
 acc_Network, f1_Network = train_predict_data(dataset, 'Network Connections', classifier, '[^a-zA-Z0-9]')
@@ -108,7 +108,7 @@ print("Warranty Period: acc=", acc_Warranty, ", f1=", f1_Warranty)
 acc_Storage, f1_Storage = train_predict_data(dataset, 'Storage Capacity', classifier, '[^a-zA-Z0-9]')
 print("Storage Capacity: acc=", acc_Storage, ", f1=", f1_Storage)
 
-acc_Color, f1_Color = train_predict_data(dataset, 'Color Family', classifier, '[^a-zA-Z]')
+acc_Color, f1_Color = train_predict_data(dataset, 'Color Family', classifier, '[^a-zA-Z0-9]')
 print("Color Family: acc=", acc_Color, ", f1=", f1_Color)
 
 acc_Model, f1_Model = train_predict_data(dataset, 'Phone Model', classifier, '[^a-zA-Z0-9]')
