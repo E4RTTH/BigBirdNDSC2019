@@ -1,4 +1,4 @@
-from translate_selenium import Translate, Translate_Concurrent
+from translate_selenium import Translate
 import pandas as pd
 import re
 
