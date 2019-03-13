@@ -24,7 +24,7 @@ def preprocess_data(titles, regex):
     for item in titles:
         
         #Remove space between number and inch
-        title = re.sub('(?<=(\d)) (?=(inch))', '', item) 
+        #title = re.sub('(?<=(\d)) (?=(inch))', '', item) 
         
         # Replace regex term into space (non letters & non numbers)
         title = re.sub(regex, ' ', item)
