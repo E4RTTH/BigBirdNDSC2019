@@ -29,8 +29,8 @@ def preprocess_data(titles, regex):
         title = re.sub('tahun|thn|yr', 'year', title)   
         title = re.sub('bulan|bln|mth', 'month', title)
         title = re.sub('(?<=(\d)) (?=(year|month|))', '', title)
-        title = re.sub('(?<=(\d)) (?=(inch))', '', item) 
-        title = re.sub('[\S]*(gb|mb|mp|year|month)', '', item) 
+        title = re.sub('(?<=(\d)) (?=(inch))', '', title) 
+        title = re.sub('[\S]*(gb|mb|mp|year|month)', '', title) 
         
         title = re.sub(regex, ' ', item)
         title = title.lower()
