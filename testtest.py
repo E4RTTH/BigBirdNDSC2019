@@ -32,7 +32,7 @@ def preprocess_data(titles, regex):
         title = re.sub('(?<=(\d)) (?=(inch))', '', title) 
         title = re.sub('[\S]*(gb|mb|mp|year|month)', '', title) 
         
-        title = re.sub(regex, ' ', item)
+        title = re.sub(regex, ' ', title)
         title = title.lower()
         title = title.split()
         title = [ps.stem(word) for word in title if not word in set(stopwords.words('english'))]
