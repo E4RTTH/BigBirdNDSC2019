@@ -122,7 +122,7 @@ dataset_val = pd.read_csv('beauty_data_info_val_competition.csv', quoting = 3)
 attr_name = 'Colour_group'
 
 # Change to the classifier you want to use
-classifier = RandomForestClassifier(n_estimators = 300, criterion = 'entropy', random_state = 0, min_samples_split = 6)
+classifier = RandomForestClassifier(n_estimators = 300, criterion = 'gini', random_state = 0, min_samples_split = 6)
 
 # Change the regex term
 regex = '[^a-zA-Z0-9]'

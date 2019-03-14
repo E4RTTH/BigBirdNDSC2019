@@ -23,9 +23,6 @@ def preprocess_data(titles, regex):
     data = []
     for item in titles:
         
-        #Remove space between number and inch
-        #title = re.sub('(?<=(\d)) (?=(inch))', '', item) 
-        
         # Replace regex term into space (non letters & non numbers)
         title = re.sub(regex, ' ', item)
         
@@ -114,6 +111,7 @@ taglist = []
 predictionNum = 2
 
 # CHANGE THIS SECTION!!---------------------------------------------------------------------------------
+# Best results: 
 
 # Change the base result file you want to use 
 resultdf = pd.read_csv('submission8.csv')
@@ -126,7 +124,7 @@ dataset_val = pd.read_csv('mobile_data_info_val_competition.csv', quoting = 3)
 attr_name = 'Phone Screen Size'
 
 # Change to the classifier you want to use
-classifier = RandomForestClassifier(n_estimators = 300, criterion = 'entropy', random_state = 0, min_samples_split = 6)
+classifier = RandomForestClassifier(n_estimators = 300, criterion = 'gini', random_state = 0, min_samples_split = 6)
 
 # Change the regex term
 regex = '[^a-zA-Z0-9\.]'
