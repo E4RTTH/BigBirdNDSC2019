@@ -125,7 +125,7 @@ attr_name = 'Warranty Period'
 classifier = RandomForestClassifier(n_estimators = 300, criterion = 'gini', random_state = 0, min_samples_split = 6)
 
 # Change the regex term
-regex = '[^a-zA-Z0-9]'
+regex = '[^a-zA-Z0-9\.]'
 
 # Change the vectorizer count
 vecCount = 10000
