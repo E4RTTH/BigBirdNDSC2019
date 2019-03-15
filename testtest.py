@@ -21,7 +21,7 @@ def preprocess_data(titles, regex):
     for item in titles:
         
         title = item
-        
+        """
         # Remove all the spaces between numbers and keyterm
         title = re.sub('(?<=(\d)) (?=(g ))', '', title) 
         title = re.sub('(?<=(\d)) (?=(gb|mb))', '', title)
@@ -31,7 +31,16 @@ def preprocess_data(titles, regex):
         title = re.sub('(?<=(\d)) (?=(year|month|))', '', title)
         title = re.sub('(?<=(\d)) (?=(inch))', '', title) 
         title = re.sub('[\S]*(gb|mb|mp|year|month)', '', title) 
-        
+        """
+        #mobile test filter
+        title = re.sub('[\S]*promo[\S]*', '', title) 
+        title = re.sub('[\S]*beli[\S]*', '', title) 
+        title = re.sub('[\S]*murah[\S]*', '', title) 
+        title = re.sub('[\S]*hari[\S]*', '', title) 
+        title = re.sub('[\S]*diskon[\S]*', '', title) 
+        title = re.sub('[\S]*ini[\S]*', '', title) 
+        title = re.sub('[\S]*sale[\S]*', '', title) 
+        title = re.sub('[\S]*harga[\S]*', '', title) 
         title = re.sub(regex, ' ', title)
         title = title.lower()
         title = title.split()
@@ -57,10 +66,10 @@ dataset = pd.read_csv('mobile_data_info_train_competition.csv', quoting = 3)
 # Update stopwords database
 nltk.download('stopwords')
 
-classifier = RandomForestClassifier(n_estimators = 300, criterion = 'entropy', random_state = 0, min_samples_split = 6)
+classifier = RandomForestClassifier(n_estimators = 300, criterion = 'gini', random_state = 0, min_samples_split = 6)
 #, max_depth=130
 
-attr_name = 'Phone Screen Size'
+attr_name = 'Features'
 regex = '[^a-zA-Z0-9\.]'
 
 # Some declaration and initialization

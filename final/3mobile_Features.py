@@ -22,8 +22,20 @@ def preprocess_data(titles, regex):
     ps = PorterStemmer()
     data = []
     for item in titles:
+        title = item
+        
+        # Remove all the high frequency but unrelated terms
+        title = re.sub('[\S]*promo[\S]*', '', title) 
+        title = re.sub('[\S]*beli[\S]*', '', title) 
+        title = re.sub('[\S]*murah[\S]*', '', title) 
+        title = re.sub('[\S]*hari[\S]*', '', title) 
+        title = re.sub('[\S]*diskon[\S]*', '', title) 
+        title = re.sub('[\S]*ini[\S]*', '', title) 
+        title = re.sub('[\S]*sale[\S]*', '', title) 
+        title = re.sub('[\S]*harga[\S]*', '', title) 
+        
         # Replace regex term into space (non letters & non numbers)
-        title = re.sub(regex, ' ', item)
+        title = re.sub(regex, ' ', title)
         
         # Replace term to lowercase
         title = title.lower()
@@ -122,10 +134,10 @@ dataset_val = pd.read_csv('mobile_data_info_val_competition.csv', quoting = 3)
 attr_name = 'Features'
 
 # Change to the classifier you want to use
-classifier = RandomForestClassifier(n_estimators = 300, criterion = 'entropy', random_state = 0, max_depth=150)
+classifier = RandomForestClassifier(n_estimators = 300, criterion = 'gini', random_state = 0, min_samples_split = 6)
 
 # Change the regex term
-regex = '[^a-zA-Z0-9]'
+regex = '[^a-zA-Z0-9\.]'
 
 # Change the vectorizer count
 vecCount = 10000
