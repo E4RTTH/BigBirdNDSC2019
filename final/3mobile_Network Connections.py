@@ -24,16 +24,6 @@ def preprocess_data(titles, regex):
     for item in titles:
         title = item
         
-        # Remove all the high frequency but unrelated terms
-        title = re.sub('[\S]*promo[\S]*', '', title) 
-        title = re.sub('[\S]*beli[\S]*', '', title) 
-        title = re.sub('[\S]*murah[\S]*', '', title) 
-        title = re.sub('[\S]*hari[\S]*', '', title) 
-        title = re.sub('[\S]*diskon[\S]*', '', title) 
-        title = re.sub('[\S]*ini[\S]*', '', title) 
-        title = re.sub('[\S]*sale[\S]*', '', title) 
-        title = re.sub('[\S]*harga[\S]*', '', title) 
-        
         # Replace regex term into space (non letters & non numbers)
         title = re.sub(regex, ' ', title)
         
@@ -48,6 +38,16 @@ def preprocess_data(titles, regex):
         
         # Join the list of words back with string as seperator
         title = ' '.join(title)
+        
+        # Remove all the high frequency but unrelated terms
+        title = re.sub('[\S]*promo[\S]*', '', title) 
+        title = re.sub('[\S]*beli[\S]*', '', title) 
+        title = re.sub('[\S]*murah[\S]*', '', title) 
+        title = re.sub('[\S]*hari[\S]*', '', title) 
+        title = re.sub('[\S]*diskon[\S]*', '', title) 
+        title = re.sub('[\S]*ini[\S]*', '', title) 
+        title = re.sub('[\S]*sale[\S]*', '', title) 
+        title = re.sub('[\S]*harga[\S]*', '', title) 
         
         # Append the preprocessed text back to dataset
         data.append(title)

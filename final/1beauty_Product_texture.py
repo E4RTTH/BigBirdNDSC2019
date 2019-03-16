@@ -37,6 +37,15 @@ def preprocess_data(titles, regex):
         # Join the list of words back with string as seperator
         title = ' '.join(title)
         
+        title = re.sub('krem', 'cream', title) 
+        title = re.sub('(?<=(natur)) (?=(republ))', '', title)
+        title = re.sub('[\S]*promo[\S]*', '', title) 
+        title = re.sub('[\S]*murah[\S]*', '', title) 
+        title = re.sub('[\S]*new[\S]*', '', title) 
+        title = re.sub('[\S]*diskon[\S]*', '', title) 
+        title = re.sub('[\S]*best[\S]*', '', title) 
+        title = re.sub('[\S]*sale[\S]*', '', title) 
+        
         # Append the preprocessed text back to dataset
         data.append(title)
                 
@@ -125,7 +134,7 @@ attr_name = 'Product_texture'
 classifier = RandomForestClassifier(n_estimators = 300, criterion = 'gini', random_state = 0, min_samples_split = 6)
 
 # Change the regex term
-regex = '[^a-zA-Z0-9]'
+regex = '[^a-zA-Z0-9\.]'
 
 # Change the vectorizer count
 vecCount = 5000

@@ -37,6 +37,15 @@ def preprocess_data(titles, regex):
         # Join the list of words back with string as seperator
         title = ' '.join(title)
         
+        title = re.sub('krem', 'cream', title) 
+        title = re.sub('(?<=(natur)) (?=(republ))', '', title)
+        title = re.sub('[\S]*promo[\S]*', '', title) 
+        title = re.sub('[\S]*murah[\S]*', '', title) 
+        title = re.sub('[\S]*new[\S]*', '', title) 
+        title = re.sub('[\S]*diskon[\S]*', '', title) 
+        title = re.sub('[\S]*best[\S]*', '', title) 
+        title = re.sub('[\S]*sale[\S]*', '', title) 
+        
         # Append the preprocessed text back to dataset
         data.append(title)
                 
