@@ -39,6 +39,7 @@ def preprocess_data(titles, regex):
         title = ' '.join(title)
         
         title = re.sub('(?<=(v)) (?=(neck))', '', title)
+        title = re.sub(' v ', ' vneck ', title) 
         title = re.sub('bunga', 'floral', title) 
         title = re.sub('untuk', '', title) 
         title = re.sub('tempat', '', title) 
