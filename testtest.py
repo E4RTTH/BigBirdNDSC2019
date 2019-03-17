@@ -105,7 +105,7 @@ nltk.download('stopwords')
 classifier = RandomForestClassifier(n_estimators = 300, criterion = 'gini', random_state = 0, min_samples_split = 4)
 #, max_depth=130
 
-attr_name = 'Collar Type'
+attr_name = 'Sleeves'
 regex = '[^a-zA-Z0-9\.]'
 
 # Some declaration and initialization
@@ -148,7 +148,7 @@ df_wrong = df[df.actual != df.pred]
 
 cm = confusion_matrix(y_test, y_pred)
 
-dfcontaindot = dataset[dataset.title.str.contains(' 3 ')]
+#dfcontaindot = dataset[dataset.title.str.contains(' 3 ')]
 #dfcontainv = dataset_attr[dataset_attr.title.str.contains(' v ')]
 #dfvneck = dfcontainv[dfcontainv['Collar Type'] == 8]
 
