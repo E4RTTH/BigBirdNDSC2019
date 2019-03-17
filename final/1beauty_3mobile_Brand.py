@@ -122,6 +122,8 @@ def train_predict_data_beauty(dataset_train, dataset_val, attr_name, classifier,
     X_train = preprocess_data_beauty(dataset_train_attr['title'].values, regex)
     X_test = preprocess_data_beauty(dataset_val['title'].values, regex)
     
+    print("Finished preprocessing beauty")
+    
     # Extract results for training
     y_train = dataset_train_attr[attr_name].values
     
@@ -132,14 +134,22 @@ def train_predict_data_beauty(dataset_train, dataset_val, attr_name, classifier,
     X_train = X[0:trainCount]
     X_test = X[trainCount:len(X)]
     
+    print("Finished vectorizing beauty")
+    
     # Fitting Logistic Regression one vs all
     classifier.fit(X_train, y_train)
+    
+    print("Finished training beauty")
     
     # Calculate the probabilities of predictions
     y_pred_proba = classifier.predict_proba(X_test)
     
+    print("Finished predicting beauty")
+    
     # Calculate top predictions acoording to probabilities
     y_pred = calculate_top_preds(classifier.classes_, y_pred_proba, predNum)
+    
+    print("Finished calculating top probabilities for beauty")
             
     return y_pred
 
@@ -157,6 +167,8 @@ def train_predict_data_mobile(dataset_train, dataset_val, attr_name, classifier,
     X_train = preprocess_data_mobile(dataset_train_attr['title'].values, regex)
     X_test = preprocess_data_mobile(dataset_val['title'].values, regex)
     
+    print("Finished preprocessing mobile")
+    
     # Extract results for training
     y_train = dataset_train_attr[attr_name].values
     
@@ -167,14 +179,22 @@ def train_predict_data_mobile(dataset_train, dataset_val, attr_name, classifier,
     X_train = X[0:trainCount]
     X_test = X[trainCount:len(X)]
     
+    print("Finished vectorizing mobile")
+    
     # Fitting Logistic Regression one vs all
     classifier.fit(X_train, y_train)
+    
+    print("Finished training mobile")
     
     # Calculate the probabilities of predictions
     y_pred_proba = classifier.predict_proba(X_test)
     
+    print("Finished predicting mobile")
+    
     # Calculate top predictions acoording to probabilities
     y_pred = calculate_top_preds(classifier.classes_, y_pred_proba, predNum)
+    
+    print("Finished calculating top probabilities for mobile")
             
     return y_pred
 
@@ -201,7 +221,7 @@ dataset_val = pd.read_csv('beauty_data_info_val_competition.csv', quoting = 3)
 attr_name = 'Brand'
 
 # Change to the classifier you want to use
-classifier = RandomForestClassifier(n_estimators = 300, criterion = 'gini', random_state = 0, min_samples_split = 8)
+classifier = RandomForestClassifier(n_estimators = 200, criterion = 'gini', random_state = 0, min_samples_split = 8)
 
 # Change the regex term
 regex = '[^a-zA-Z0-9\.]'
@@ -234,7 +254,7 @@ submission = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
 resultdf = resultdf.append(submission)
 resultdf.to_csv('submission8.csv', index=False)
 
-
+del resultdf, submission, y_pred, idlist, taglist
 
 
 
@@ -261,7 +281,7 @@ dataset_val = pd.read_csv('mobile_data_info_val_competition.csv', quoting = 3)
 attr_name = 'Brand'
 
 # Change to the classifier you want to use
-classifier = RandomForestClassifier(n_estimators = 300, criterion = 'gini', random_state = 0, min_samples_split = 6)
+classifier = RandomForestClassifier(n_estimators = 200, criterion = 'gini', random_state = 0, min_samples_split = 6)
 
 # Change the regex term
 regex = '[^a-zA-Z0-9\.]'
@@ -270,7 +290,7 @@ regex = '[^a-zA-Z0-9\.]'
 vecCount = 10000
 
 #-------------------------------------------------------------------------------------------------------
-resultdf = resultdf[~resultdf.id.str.contains(attr_name)]
+#resultdf = resultdf[~resultdf.id.str.contains(attr_name)]
 
 y_pred = train_predict_data_mobile(dataset_train,  \
                                    dataset_val,    \
