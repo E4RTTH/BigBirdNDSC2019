@@ -31,7 +31,7 @@ def preprocess_data(titles, regex):
         title = re.sub('(?<=(\d)) (?=(year|month|))', '', title)
         title = re.sub('(?<=(\d)) (?=(inch))', '', title) 
         title = re.sub('[\S]*(gb|mb|mp|year|month)', '', title) 
-        """
+        
         #mobile test filter
         title = re.sub('[\S]*promo[\S]*', '', title) 
         title = re.sub('[\S]*beli[\S]*', '', title) 
@@ -41,11 +41,46 @@ def preprocess_data(titles, regex):
         title = re.sub('[\S]*ini[\S]*', '', title) 
         title = re.sub('[\S]*sale[\S]*', '', title) 
         title = re.sub('[\S]*harga[\S]*', '', title) 
+        """
+        
+        
         title = re.sub(regex, ' ', title)
         title = title.lower()
         title = title.split()
         title = [ps.stem(word) for word in title if not word in set(stopwords.words('english'))]
         title = ' '.join(title)
+        
+        title = re.sub('o neck', 'oneck', title)
+        title = re.sub('high neck', 'highneck', title)
+        title = re.sub('v neck', 'vneck', title)
+        title = re.sub('scoop neck', 'scoopneck', title)
+        title = re.sub('boat neck', 'boatneck', title)
+        title = re.sub('square neck', 'squareneck', title)
+        title = re.sub(' v ', ' vneck ', title) 
+        title = re.sub('bunga', 'floral', title) 
+        title = re.sub('untuk', '', title) 
+        title = re.sub('tempat', '', title) 
+        title = re.sub('di', '', title) 
+        title = re.sub('[\S]*promo[\S]*', '', title) 
+        title = re.sub('[\S]*murah[\S]*', '', title) 
+        title = re.sub('[\S]*diskon[\S]*', '', title) 
+        title = re.sub('sale', '', title) 
+        title = re.sub('dengan', '', title) 
+        title = re.sub('seller', '', title) 
+        
+        """
+        title = re.sub('krem', 'cream', title) 
+        title = re.sub('(?<=(natur)) (?=(republ))', '', title)
+        title = re.sub('[\S]*promo[\S]*', '', title) 
+        title = re.sub('[\S]*murah[\S]*', '', title) 
+        title = re.sub('[\S]*new[\S]*', '', title) 
+        title = re.sub('[\S]*diskon[\S]*', '', title) 
+        title = re.sub('[\S]*best[\S]*', '', title) 
+        title = re.sub('[\S]*sale[\S]*', '', title) 
+        """
+        
+        
+        
         data.append(title)
         
     del titles
@@ -61,28 +96,28 @@ def vectorize_data(vectorizer, data):
 
 
 # Importing the dataset
-dataset = pd.read_csv('mobile_data_info_train_competition.csv', quoting = 3)
+dataset = pd.read_csv('fashion_data_info_train_competition.csv', quoting = 3)
 
 # Update stopwords database
 nltk.download('stopwords')
 
-classifier = RandomForestClassifier(n_estimators = 300, criterion = 'gini', random_state = 0, min_samples_split = 6)
+classifier = RandomForestClassifier(n_estimators = 300, criterion = 'gini', random_state = 0, min_samples_split = 4)
 #, max_depth=130
 
-attr_name = 'Features'
+attr_name = 'Collar Type'
 regex = '[^a-zA-Z0-9\.]'
 
 # Some declaration and initialization
 X = []
     
-# Remove NaN entries from Benefits attribute
+# Remove NaN entries from attribute
 dataset_attr = dataset.dropna(subset=[attr_name])
     
 # Cleaning the titles
 X_title = preprocess_data(dataset_attr['title'].values, regex)
     
 # Using Count Vectorizer as features
-X = vectorize_data(CountVectorizer(max_features = 10000), X_title)
+X = vectorize_data(CountVectorizer(max_features = 5000), X_title)
 
 y = dataset_attr[attr_name].values
     
@@ -90,7 +125,7 @@ y = dataset_attr[attr_name].values
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, random_state = 0)
 X_title_train, X_title_test = train_test_split(X_title, test_size = 0.20, random_state = 0)
     
-del X, y
+del X, y, X_title_train
     
 classifier.fit(X_train, y_train)
     
@@ -112,3 +147,10 @@ df_wrong = df[df.actual != df.pred]
 
 cm = confusion_matrix(y_test, y_pred)
 
+
+#dfcontainv = dataset_attr[dataset_attr.title.str.contains(' v ')]
+#dfvneck = dfcontainv[dfcontainv['Collar Type'] == 8]
+
+#containkrem = sum([title.count("krem") for title in X_title])
+#containcream = sum([title.count("cream") for title in X_title])
+#containnaturerepublic = sum([title.count("natur republ") for title in X_title])
