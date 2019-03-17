@@ -29,9 +29,6 @@ def preprocess_data(titles, regex):
         # Replace term to lowercase
         title = title.lower()
         
-        # Combine v and neck
-        title = re.sub('(?<=(v)) (?=(neck))', '', title)
-        
         # Split the term to list
         title = title.split()
         
@@ -40,6 +37,18 @@ def preprocess_data(titles, regex):
         
         # Join the list of words back with string as seperator
         title = ' '.join(title)
+        
+        title = re.sub('(?<=(v)) (?=(neck))', '', title)
+        title = re.sub('bunga', 'floral', title) 
+        title = re.sub('untuk', '', title) 
+        title = re.sub('tempat', '', title) 
+        title = re.sub('di', '', title) 
+        title = re.sub('[\S]*promo[\S]*', '', title) 
+        title = re.sub('[\S]*murah[\S]*', '', title) 
+        title = re.sub('[\S]*diskon[\S]*', '', title) 
+        title = re.sub('sale', '', title) 
+        title = re.sub('dengan', '', title) 
+        title = re.sub('seller', '', title) 
         
         # Append the preprocessed text back to dataset
         data.append(title)
