@@ -50,13 +50,14 @@ def preprocess_data(titles, regex):
         title = [ps.stem(word) for word in title if not word in set(stopwords.words('english'))]
         title = ' '.join(title)
         
-        title = re.sub('o neck', 'oneck', title)
-        title = re.sub('high neck', 'highneck', title)
-        title = re.sub('v neck', 'vneck', title)
-        title = re.sub('scoop neck', 'scoopneck', title)
-        title = re.sub('boat neck', 'boatneck', title)
-        title = re.sub('square neck', 'squareneck', title)
+        title = re.sub(' o neck ', ' oneck ', title)
+        title = re.sub(' high neck ', ' highneck ', title)
+        title = re.sub(' v neck ', ' vneck ', title)
+        title = re.sub(' scoop neck ', ' scoopneck ', title)
+        title = re.sub(' boat neck ', ' boatneck ', title)
+        title = re.sub(' square neck ', ' squareneck ', title)
         title = re.sub(' v ', ' vneck ', title) 
+        title = re.sub(' 3 4 ', ' 34 ', title)
         title = re.sub('bunga', 'floral', title) 
         title = re.sub('untuk', '', title) 
         title = re.sub('tempat', '', title) 
@@ -147,7 +148,7 @@ df_wrong = df[df.actual != df.pred]
 
 cm = confusion_matrix(y_test, y_pred)
 
-
+dfcontaindot = dataset[dataset.title.str.contains(' 3 ')]
 #dfcontainv = dataset_attr[dataset_attr.title.str.contains(' v ')]
 #dfvneck = dfcontainv[dfcontainv['Collar Type'] == 8]
 
