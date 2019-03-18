@@ -38,8 +38,14 @@ def preprocess_data(titles, regex):
         # Join the list of words back with string as seperator
         title = ' '.join(title)
         
-        title = re.sub('(?<=(v)) (?=(neck))', '', title)
+        title = re.sub('o neck', ' oneck ', title)
+        title = re.sub('high neck', ' highneck ', title)
+        title = re.sub('v neck', ' vneck ', title)
+        title = re.sub('scoop neck', ' scoopneck ', title)
+        title = re.sub('boat neck', ' boatneck ', title)
+        title = re.sub('square neck', ' squareneck ', title)
         title = re.sub(' v ', ' vneck ', title) 
+        title = re.sub('3 4', ' 34 ', title)
         title = re.sub('bunga', 'floral', title) 
         title = re.sub('untuk', '', title) 
         title = re.sub('tempat', '', title) 
@@ -49,7 +55,7 @@ def preprocess_data(titles, regex):
         title = re.sub('[\S]*diskon[\S]*', '', title) 
         title = re.sub('sale', '', title) 
         title = re.sub('dengan', '', title) 
-        title = re.sub('seller', '', title) 
+        title = re.sub('seller', '', title)
         
         # Append the preprocessed text back to dataset
         data.append(title)
