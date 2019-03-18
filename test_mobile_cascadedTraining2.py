@@ -8,6 +8,7 @@ from sklearn.metrics import confusion_matrix, accuracy_score, f1_score
 from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.preprocessing import OneHotEncoder
+from sklearn.neural_network import MLPClassifier
 
 def calculate_top_preds(y_classes, y_pred_proba, topNum):
     
@@ -42,8 +43,8 @@ onehotencoder = OneHotEncoder(n_values = 2280)
 X_train = onehotencoder.fit_transform(X_train.reshape(-1, 1)).toarray()
 X_pred = onehotencoder.fit_transform(X_pred.reshape(-1, 1)).toarray()
 
-
-classifier = LogisticRegression(random_state = 0)
+classifier = RandomForestClassifier(n_estimators=300, criterion = 'gini', random_state = 0, min_samples_split = 6)
+#classifier = LogisticRegression(random_state = 0, multi_class = 'ovr', solver = 'lbfgs')
 classifier.fit(X_train, y_train)
 
 y_pred = classifier.predict(X_pred)
