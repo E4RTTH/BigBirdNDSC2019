@@ -13,7 +13,6 @@ from sklearn.metrics import confusion_matrix, accuracy_score, f1_score
 from sklearn.linear_model import LogisticRegression
 from sklearn.svm import LinearSVC
 from sklearn.neural_network import MLPClassifier
-import logging
 
 
 def preprocess_data(titles):
@@ -99,16 +98,17 @@ y = dataset_attr[attr_name].values
 model = Word2Vec(
         X,
         size=500,
-       # window=10,
+        window=10,
         workers=10)
-model.train(X, total_examples=model.corpus_count, epochs=10)
+model.train(X, total_examples=model.corpus_count, epochs=50)
 
 #words = list(model.wv.vocab)
 #words.index("huangmi")
 
 w2v = dict(zip(model.wv.index2word, model.wv.syn0))
 
-vectorizer = TfidfEmbeddingVectorizer(w2v)
+#vectorizer = TfidfEmbeddingVectorizer(w2v)   
+vectorizer = MeanEmbeddingVectorizer(w2v)
 vectorizer.fit(X, y)
 X = vectorizer.transform(X)
 
@@ -135,7 +135,9 @@ for idx, i in enumerate(X):
 # Splitting the dataset into the Training set and Test set
 X_train, X_test, y_train, y_test = train_test_split(xresult, yresult, test_size = 0.20, random_state = 0)
     
-classifier = MLPClassifier(alpha=0.01, hidden_layer_sizes=500)
+classifier = RandomForestClassifier(n_estimators = 300, criterion = 'gini', random_state = 0, min_samples_split = 6)
+#RandomForestClassifier(n_estimators = 300, criterion = 'gini', random_state = 0, min_samples_split = 6)
+#MLPClassifier(alpha=0.01, hidden_layer_sizes=500)
 
 classifier.fit(X_train, y_train)
     
