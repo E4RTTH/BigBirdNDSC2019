@@ -29,11 +29,23 @@ def preprocess_data(titles):
     ps = PorterStemmer()
     data = []
     for item in titles:
-        title = re.sub('[^a-zA-Z]', ' ', item)
+        
+        title = item
+        title = re.sub('[^a-zA-Z0-9\.]', ' ', item)
         title = title.lower()
         title = title.split()
         title = [ps.stem(word) for word in title if not word in set(stopwords.words('english'))]
         title = ' '.join(title)
+        
+        title = re.sub('krem', 'cream', title) 
+        title = re.sub('(?<=(natur)) (?=(republ))', '', title)
+        title = re.sub('[\S]*promo[\S]*', '', title) 
+        title = re.sub('[\S]*murah[\S]*', '', title) 
+        title = re.sub('[\S]*new[\S]*', '', title) 
+        title = re.sub('[\S]*diskon[\S]*', '', title) 
+        title = re.sub('[\S]*best[\S]*', '', title) 
+        title = re.sub('[\S]*sale[\S]*', '', title) 
+        
         data.append(title)
         
     return data
@@ -60,7 +72,7 @@ def train_predict_data(dataset, attr_name, classifier):
     print("Finish preprocessing ", attr_name)
     
     # Using Count Vectorizer as features
-    X = vectorize_data(CountVectorizer(max_features = 10000), X)
+    X = vectorize_data(CountVectorizer(max_features = 5000), X)
     
     print("Finish vectorizing ", attr_name)
     
@@ -103,7 +115,7 @@ def train_predict_data(dataset, attr_name, classifier):
 
 
 # Models definition ------------------------------------------------------------------------------------
-
+"""
 classifierNames = ["Logistic regression OvR",
                    "Logistic regression Multinomial",
                    "Nearest Neighbors", 
@@ -130,6 +142,9 @@ classifiers = [
         AdaBoostClassifier(),
         GaussianNB(),
         QuadraticDiscriminantAnalysis() ]
+"""
+depths = [100,110,120,130,140,150,160]
+
 
 #-------------------------------------------------------------------------------------------------------
 
@@ -151,14 +166,14 @@ nltk.download('stopwords')
 
 val_list = []
 
-for i, classifier in enumerate(classifiers):
+for depth in depths:
     
     for attr in attributes:
-        
-        print("Start running ", attr," with ", classifierNames[i])
+        classifier = RandomForestClassifier(n_estimators = 300, criterion = 'gini', random_state = 0, min_samples_split = 6, max_depth = depth)
+        print("Start running ", attr," with depth ", depth)
         acc, f1 = train_predict_data(dataset, attr, classifier)
-        print(attr, ": classifier=", classifierNames[i]," acc=", acc, ", f1=", f1)
-        valitem = [classifierNames[i], attr, acc, f1]
+        print(attr, ": depth=", depth," acc=", acc, ", f1=", f1)
+        valitem = [depth, attr, acc, f1]
         val_list.append(valitem)
 
 
