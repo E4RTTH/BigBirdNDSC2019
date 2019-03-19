@@ -64,8 +64,8 @@ def calculate_top_preds(y_classes1, y_pred_proba1, y_classes2, y_pred_proba2):
     y_pred = []
     
     for i in range(len(y_pred_proba1)):
-        probas = y_pred_proba1[i] + y_pred_proba2[i]
-        classes = y_classes1 + y_classes2
+        probas = np.hstack((y_pred_proba1[i], y_pred_proba2[i]))
+        classes = np.hstack((y_classes1, y_classes2))
         top1 = -1
         top2 = -1
         top1proba = -1
@@ -74,11 +74,14 @@ def calculate_top_preds(y_classes1, y_pred_proba1, y_classes2, y_pred_proba2):
             if prob > top1proba:
                 top1proba = prob
                 top1 = classes[i]
+
+        for i, prob in enumerate(probas):
+            if classes[i] == top1:
                 continue
             if prob > top2proba:
                 top2proba = prob
                 top2 = classes[i]
-                continue
+        
         strPred = '{} {}'.format(int(top1), int(top2))
         y_pred.append(strPred)
     
