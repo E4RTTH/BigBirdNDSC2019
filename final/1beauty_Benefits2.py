@@ -12,10 +12,15 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model import LogisticRegression
 from sklearn.calibration import CalibratedClassifierCV
+from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
+from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 
 # Update stopwords database
 nltk.download('stopwords')
-
+stopwords_factory = StopWordRemoverFactory()
+stopwords_id = stopwords_factory.create_stop_word_remover()
+stemmer_factory = StemmerFactory()
+stemmer_id = stemmer_factory.create_stemmer()
 
 # Functions definition --------------------------------------------------------------------------------
 
@@ -34,6 +39,8 @@ def preprocess_data(titles, regex):
         title = title.split()
         
         # Remove stopwords
+        title = [stopwords_id.remove(word) for word in title]
+        title = [stemmer_id.stem(word) for word in title]
         title = [ps.stem(word) for word in title if not word in set(stopwords.words('english'))]
         
         # Join the list of words back with string as seperator
@@ -112,8 +119,8 @@ def train_predict_data(dataset_train, dataset_val, attr_name, classifier1, class
     X_train = X[0:trainCount]
     X_test = X[trainCount:len(X)]
     
-    calibrator1 = CalibratedClassifierCV(classifier1, cv=3)
-    calibrator2 = CalibratedClassifierCV(classifier2, cv=3)
+    calibrator1 = CalibratedClassifierCV(classifier1, cv=8)
+    calibrator2 = CalibratedClassifierCV(classifier2, cv=8)
     
     # Fitting Classifiers
     calibrator1.fit(X_train, y_train)
@@ -183,4 +190,4 @@ print ('Finish writing to list')
 #-------------------------------------------------------------------------------------------------------
 submission = pd.DataFrame(data = {'id': idlist, 'tagging': taglist})
 resultdf = resultdf.append(submission)
-resultdf.to_csv('submission8.csv', index=False)
+resultdf.to_csv('submission9.csv', index=False)

@@ -10,9 +10,15 @@ from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.ensemble import RandomForestClassifier
+from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
+from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 
 # Update stopwords database
 nltk.download('stopwords')
+stopwords_factory = StopWordRemoverFactory()
+stopwords_id = stopwords_factory.create_stop_word_remover()
+stemmer_factory = StemmerFactory()
+stemmer_id = stemmer_factory.create_stemmer()
 
 
 # Functions definition --------------------------------------------------------------------------------
@@ -22,7 +28,7 @@ def preprocess_data(titles, regex):
     ps = PorterStemmer()
     data = []
     for item in titles:
-        # Replace regex term into space (non letters & non numbers)
+        # Replace regex term into space 
         title = re.sub(regex, ' ', item)
         
         # Replace term to lowercase
@@ -32,10 +38,30 @@ def preprocess_data(titles, regex):
         title = title.split()
         
         # Remove stopwords
+        title = [stopwords_id.remove(word) for word in title]
+        title = [stemmer_id.stem(word) for word in title]
         title = [ps.stem(word) for word in title if not word in set(stopwords.words('english'))]
         
         # Join the list of words back with string as seperator
         title = ' '.join(title)
+        
+        title = re.sub('o neck', ' oneck ', title)
+        title = re.sub('high neck', ' highneck ', title)
+        title = re.sub('v neck', ' vneck ', title)
+        title = re.sub('scoop neck', ' scoopneck ', title)
+        title = re.sub('boat neck', ' boatneck ', title)
+        title = re.sub('square neck', ' squareneck ', title)
+        title = re.sub(' v ', ' vneck ', title) 
+        title = re.sub('3 4', ' 34 ', title)
+        title = re.sub('bunga', 'floral', title) 
+        title = re.sub('untuk', '', title) 
+        title = re.sub('tempat', '', title) 
+        title = re.sub('[\S]*promo[\S]*', '', title) 
+        title = re.sub('[\S]*murah[\S]*', '', title) 
+        title = re.sub('[\S]*diskon[\S]*', '', title) 
+        title = re.sub('sale', '', title) 
+        title = re.sub('dengan', '', title) 
+        title = re.sub('seller', '', title)
         
         # Append the preprocessed text back to dataset
         data.append(title)

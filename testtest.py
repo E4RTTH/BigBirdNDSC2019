@@ -15,6 +15,15 @@ from sklearn.linear_model import LogisticRegression
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.linear_model.stochastic_gradient import SGDClassifier
 from xgboost import XGBClassifier 
+from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
+from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
+ 
+# Update stopwords database
+nltk.download('stopwords')
+stopwords_factory = StopWordRemoverFactory()
+stopwords_id = stopwords_factory.create_stop_word_remover()
+stemmer_factory = StemmerFactory()
+stemmer_id = stemmer_factory.create_stemmer()
 
 def preprocess_data(titles, regex):
     ps = PorterStemmer()
@@ -33,14 +42,14 @@ def preprocess_data(titles, regex):
         title = re.sub('(?<=(\d)) (?=(inch))', '', title) 
         title = re.sub('[\S]*(gb|mb|mp|year|month)', '', title) 
         """
-        #
-        
-        
-        
+
         title = re.sub(regex, ' ', title)
         title = title.lower()
         title = title.split()
+        title = [stopwords_id.remove(word) for word in title]
+        title = [stemmer_id.stem(word) for word in title]
         title = [ps.stem(word) for word in title if not word in set(stopwords.words('english'))]
+        
         title = ' '.join(title)
         
         #mobile test filter
@@ -102,10 +111,9 @@ def vectorize_data(vectorizer, data):
 # Importing the dataset
 dataset = pd.read_csv('mobile_data_info_train_competition.csv', quoting = 3)
 
-# Update stopwords database
-nltk.download('stopwords')
 
-classifier = RandomForestClassifier(n_estimators = 300, criterion = 'gini', random_state = 7, min_samples_split = 6)
+
+classifier = RandomForestClassifier(n_estimators = 300, criterion = 'gini', random_state = 0, min_samples_split = 6)
 #, max_depth=130
 
 attr_name = 'Camera'
@@ -126,8 +134,8 @@ X = vectorize_data(CountVectorizer(max_features = 3000), X_title)
 y = dataset_attr[attr_name].values
     
 # Splitting the dataset into the Training set and Test set
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, random_state = 5)
-X_title_train, X_title_test = train_test_split(X_title, test_size = 0.20, random_state = 5)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size = 0.20, random_state = 0)
+X_title_train, X_title_test = train_test_split(X_title, test_size = 0.20, random_state = 0)
     
 del X, y, X_title_train
     
