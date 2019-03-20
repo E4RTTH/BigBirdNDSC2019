@@ -45,6 +45,7 @@ def preprocess_data(titles, regex):
         title = ' '.join(title)
         
         title = re.sub('krem', 'cream', title) 
+        title = re.sub('spf', ' spf ', title) 
         title = re.sub('(?<=(natur)) (?=(republ))', '', title)
         title = re.sub('[\S]*promo[\S]*', '', title) 
         title = re.sub('[\S]*murah[\S]*', '', title) 
