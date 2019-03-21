@@ -10,15 +10,11 @@ from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.ensemble import RandomForestClassifier
-from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
-from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
+from sklearn.feature_selection import SelectKBest
+from sklearn.feature_selection import chi2
 
 # Update stopwords database
 nltk.download('stopwords')
-stopwords_factory = StopWordRemoverFactory()
-stopwords_id = stopwords_factory.create_stop_word_remover()
-stemmer_factory = StemmerFactory()
-stemmer_id = stemmer_factory.create_stemmer()
 
 
 # Functions definition --------------------------------------------------------------------------------
@@ -38,12 +34,20 @@ def preprocess_data(titles, regex):
         title = title.split()
         
         # Remove stopwords
-        title = [stopwords_id.remove(word) for word in title]
-        title = [stemmer_id.stem(word) for word in title]
         title = [ps.stem(word) for word in title if not word in set(stopwords.words('english'))]
         
         # Join the list of words back with string as seperator
         title = ' '.join(title)
+        
+        # Remove all the high frequency but unrelated terms
+        title = re.sub('[\S]*promo[\S]*', '', title) 
+        title = re.sub('[\S]*beli[\S]*', '', title) 
+        title = re.sub('[\S]*murah[\S]*', '', title) 
+        title = re.sub('[\S]*hari[\S]*', '', title) 
+        title = re.sub('[\S]*diskon[\S]*', '', title) 
+        title = re.sub('[\S]*ini[\S]*', '', title) 
+        title = re.sub('[\S]*sale[\S]*', '', title) 
+        title = re.sub('[\S]*harga[\S]*', '', title) 
         
         # Append the preprocessed text back to dataset
         data.append(title)
@@ -97,6 +101,10 @@ def train_predict_data(dataset_train, dataset_val, attr_name, classifier, regex,
     X_train = X[0:trainCount]
     X_test = X[trainCount:len(X)]
     
+    feature_selector = SelectKBest(chi2, k=3000)
+    X_train = feature_selector.fit_transform(X_train, y_train)
+    X_test = feature_selector.transform(X_test)
+    
     # Fitting Logistic Regression one vs all
     classifier.fit(X_train, y_train)
     
@@ -130,10 +138,10 @@ dataset_val = pd.read_csv('mobile_data_info_val_competition.csv', quoting = 3)
 attr_name = 'Phone Model'
 
 # Change to the classifier you want to use
-classifier = RandomForestClassifier(n_estimators = 300, criterion = 'gini', random_state = 0, min_samples_split = 6)
+classifier = RandomForestClassifier(n_estimators = 300, criterion = 'gini', random_state = 0, min_samples_split = 5)
 
 # Change the regex term
-regex = '[^a-zA-Z0-9]'
+regex = '[^a-zA-Z0-9\.]'
 
 # Change the vectorizer count
 vecCount = 10000

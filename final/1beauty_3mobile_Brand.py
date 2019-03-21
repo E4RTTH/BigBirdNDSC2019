@@ -10,15 +10,9 @@ from nltk.corpus import stopwords
 from nltk.stem.porter import PorterStemmer
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.ensemble import RandomForestClassifier
-from Sastrawi.StopWordRemover.StopWordRemoverFactory import StopWordRemoverFactory
-from Sastrawi.Stemmer.StemmerFactory import StemmerFactory
 
 # Update stopwords database
 nltk.download('stopwords')
-stopwords_factory = StopWordRemoverFactory()
-stopwords_id = stopwords_factory.create_stop_word_remover()
-stemmer_factory = StemmerFactory()
-stemmer_id = stemmer_factory.create_stemmer()
 
 # Functions definition --------------------------------------------------------------------------------
 
@@ -37,8 +31,6 @@ def preprocess_data_beauty(titles, regex):
         title = title.split()
         
         # Remove stopwords
-        title = [stopwords_id.remove(word) for word in title]
-        title = [stemmer_id.stem(word) for word in title]
         title = [ps.stem(word) for word in title if not word in set(stopwords.words('english'))]
         
         # Join the list of words back with string as seperator
@@ -73,8 +65,6 @@ def preprocess_data_mobile(titles, regex):
         title = title.split()
         
         # Remove stopwords
-        title = [stopwords_id.remove(word) for word in title]
-        title = [stemmer_id.stem(word) for word in title]
         title = [ps.stem(word) for word in title if not word in set(stopwords.words('english'))]
         
         # Join the list of words back with string as seperator
